@@ -1,6 +1,7 @@
+import installPlugins from './plugins';
 
 const applyConfig = (config) => {
-  console.log("Volto Slate Mentions initialized");
+  installPlugins(config);
   return config;
 };
 
