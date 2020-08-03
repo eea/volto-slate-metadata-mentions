@@ -14,6 +14,11 @@ export const MentionsElement = ({ attributes, children, element, mode }) => {
     output = metadata[data.mention]?.title || metadata[data.mention];
   }
 
+  // Array
+  if(Array.isArray(output)) {
+    output = output.join(", ");
+  }
+
   return (
     <>
       {mode === 'view' ? (
