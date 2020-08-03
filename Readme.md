@@ -33,7 +33,7 @@ Before starting make sure your development environment is properly set. See [Vol
             },
 
             "addons": [
-                "volto-slate",
+                "volto-slate:asDefault",
                 "volto-slate-mentions"
             ],
 
@@ -42,8 +42,8 @@ Before starting make sure your development environment is properly set. See [Vol
             ],
 
             "dependencies": {
-                "@plone/volto": "github:eea/volto#7.3.0-beta.1",
-                "volto-slate": "github:eea/volto-slate#0.3.4"
+                "@plone/volto": "github:eea/volto#7.6.0-beta.1",
+                "volto-slate": "github:eea/volto-slate#0.3.7"
             }
         }
 

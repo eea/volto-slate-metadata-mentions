@@ -1,15 +1,31 @@
-import { Editor, Transforms, Range } from 'slate';
+import { Transforms } from 'slate';
+import { nanoid } from 'volto-slate/utils';
 
 export const withMentions = (editor) => {
-  const { insertText } = editor;
+  const { isInline, normalizeNode } = editor;
 
-  editor.insertText = (text) => {
-    const { selection } = editor;
-    if( text === '@' ) {
-      text += 'mention-here';
+  editor.isInline = (element) => {
+    return element.type === "mention" ? true : isInline(element);
+  };
+
+  editor.normalizeNode = (entry) => {
+    const [node, path] = entry;
+    if (node.type === "mention" && !node.data?.uid) {
+      Transforms.setNodes(
+        editor,
+        {
+          data: {
+            uid: nanoid(5),
+            mention: node.data?.mention
+          },
+        },
+        {
+          at: path,
+        },
+      );
     }
-    insertText(text);
-  }
+    return normalizeNode(entry);
+  };
 
   return editor;
 };
