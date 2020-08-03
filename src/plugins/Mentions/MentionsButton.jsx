@@ -102,7 +102,11 @@ const MentionsButton = () => {
           schema={Schema}
           title={Schema.title}
           onChangeField={(id, value) => {
-            const formData = { ...formData, [id]: value };
+            const formData = {
+              ...formData,
+              [id]: value,
+              properties: properties[value]
+            };
             setFormdata(formData);
             if(!value) {
               unwrapMention(editor);

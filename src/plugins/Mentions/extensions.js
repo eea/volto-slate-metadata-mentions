@@ -15,8 +15,8 @@ export const withMentions = (editor) => {
         editor,
         {
           data: {
-            uid: nanoid(5),
-            mention: node.data?.mention
+            ...node.data,
+            uid: nanoid(5)
           },
         },
         {
