@@ -1,6 +1,6 @@
-# volto-slate-mentions
+# volto-slate-metadata-mentions
 
-[Volto Slate](https://github.com/eea/volto-slate/tree/develop) Mentions
+[Volto Slate](https://github.com/eea/volto-slate/tree/develop) Metadata Mentions
 
 
 ## Develop
@@ -34,11 +34,11 @@ Before starting make sure your development environment is properly set. See [Vol
 
             "addons": [
                 "volto-slate:asDefault",
-                "volto-slate-mentions"
+                "volto-slate-metadata-mentions"
             ],
 
             "workspaces": [
-                "src/addons/volto-slate-mentions"
+                "src/addons/volto-slate-metadata-mentions"
             ],
 
             "dependencies": {
@@ -50,8 +50,8 @@ Before starting make sure your development environment is properly set. See [Vol
 1. Add the following to `mrs.developer.json`:
 
         {
-            "volto-slate-mentions": {
-                "url": "https://github.com/eea/volto-slate-mentions.git",
+            "volto-slate-metadata-mentions": {
+                "url": "https://github.com/eea/volto-slate-metadata-mentions.git",
                 "branch": "develop",
                 "path": "src"
             }
@@ -80,4 +80,4 @@ Before starting make sure your development environment is properly set. See [Vol
 
 1. Happy hacking!
 
-        $ cd src/addons/volto-slate-mentions/
+        $ cd src/addons/volto-slate-metadata-mentions/
