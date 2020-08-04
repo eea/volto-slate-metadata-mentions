@@ -1,30 +1,37 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
-import { ViewHTMLBlock } from "@plone/volto/components";
+// import { ViewHTMLBlock } from "@plone/volto/components";
+import { widgets } from '~/config';
 
-export const MentionsElement = ({ attributes, children, element, mode }) => {
+export const MentionsElement = ({ children, element, mode }) => {
+  const { views } = widgets;
   const { data = {} } = element;
   const metadata = useSelector(state => state?.content?.data || {});
 
-  // RichText
-  let output = metadata[data.mention]?.data;
-  if(output) {
-    output = ViewHTMLBlock({ data: { html: output }});
-  } else {
-    output = metadata[data.mention]?.title || metadata[data.mention];
-  }
+  const schema = {id: data.mention, ...data.properties};
+  const Widget = views.getWidget(schema);
+  const output = metadata[data.mention];
 
-  // Array
-  if(Array.isArray(output)) {
-    output = output.join(", ");
-  }
+  // // RichText
+  // let output = metadata[data.mention]?.data;
+
+  // if(output) {
+  //   output = ViewHTMLBlock({ data: { html: output }});
+  // } else {
+  //   output = metadata[data.mention]?.title || metadata[data.mention];
+  // }
+
+  // // Array
+  // if(Array.isArray(output)) {
+  //   output = output.join(", ");
+  // }
 
   return (
     <>
       {mode === 'view' ? (
-          <span>{output}</span>
+        <Widget data={output} schema={schema} className="metadata mention" />
       ) : (
-          <span {...attributes} className="mention">@{data.mention}</span>
+        <span className="metadata mention edit">{children}</span>
       )}
     </>
   );

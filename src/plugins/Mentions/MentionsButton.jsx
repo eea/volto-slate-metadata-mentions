@@ -121,7 +121,6 @@ const MentionsButton = () => {
         active={isMention}
         onMouseDown={() => {
           if (!showForm) {
-            console.log(editor);
             setSelection(editor.selection);
             const mention = getActiveMentions(editor);
             if (mention) {
