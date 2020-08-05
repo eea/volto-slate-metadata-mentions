@@ -79,7 +79,7 @@ const MentionsButton = () => {
             }
             return false;
           })
-          .filter((val) => val),
+          .filter((val) => !!val),
       },
     },
   };

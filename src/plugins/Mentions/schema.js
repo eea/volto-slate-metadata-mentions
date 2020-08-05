@@ -17,6 +17,8 @@ export const MentionsSchema = {
         ['title', 'Title'],
         ['description', 'Description'],
       ],
+      enum: ['title', 'description'],
+      enumNames: ['Title', 'Description'],
     },
   },
   required: ['mention'],
