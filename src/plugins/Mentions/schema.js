@@ -10,18 +10,12 @@ export const MentionsSchema = {
   properties: {
     mention: {
       title: 'Metadata',
-      description: "Select metadata to be used",
-      factory: "Choice",
-      type: "string",
+      description: 'Select metadata to be used',
+      factory: 'Choice',
+      type: 'string',
       choices: [
-        [
-          "title",
-          "Title"
-        ],
-        [
-          "description",
-          "Description"
-        ],
+        ['title', 'Title'],
+        ['description', 'Description'],
       ],
     },
   },

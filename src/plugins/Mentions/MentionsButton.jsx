@@ -31,29 +31,29 @@ export const wrapMention = (editor, data) => {
   }
 };
 
-
 function insertMention(editor, data) {
-if (editor.selection) {
+  if (editor.selection) {
     wrapMention(editor, data);
   }
 }
 
-
 function unwrapMention(editor) {
-  Transforms.unwrapNodes(editor, { match: (n) => n.type === "mention" });
+  Transforms.unwrapNodes(editor, { match: (n) => n.type === 'mention' });
 }
 
-
 export const isActiveMention = (editor) => {
-  const [mention] = Editor.nodes(editor, { match: (n) => n.type === "mention" });
+  const [mention] = Editor.nodes(editor, {
+    match: (n) => n.type === 'mention',
+  });
   return !!mention;
 };
 
 export const getActiveMentions = (editor) => {
-  const [mention] = Editor.nodes(editor, { match: (n) => n.type === "mention" });
+  const [mention] = Editor.nodes(editor, {
+    match: (n) => n.type === 'mention',
+  });
   return mention;
 };
-
 
 const MentionsButton = () => {
   const editor = useSlate();
@@ -62,21 +62,26 @@ const MentionsButton = () => {
   const [formData, setFormdata] = React.useState({});
 
   // Get Object metadata from global state
-  const properties = useSelector(state => state?.schema?.schema?.properties || {});
+  const properties = useSelector(
+    (state) => state?.schema?.schema?.properties || {},
+  );
   const Schema = {
     ...MentionsSchema,
     properties: {
       ...MentionsSchema.properties,
       mention: {
         ...MentionsSchema.properties.mention,
-        choices: Object.keys(properties).map((key) => {
-          const val = properties[key];
-          if(val?.type !== 'dict') {
-            return [key, val?.title || key];
-          }
-        }).filter(val => val)
-      }
-    }
+        choices: Object.keys(properties)
+          .map((key) => {
+            const val = properties[key];
+            if (val?.type !== 'dict') {
+              return [key, val?.title || key];
+            }
+            return false;
+          })
+          .filter((val) => val),
+      },
+    },
   };
 
   const submitHandler = React.useCallback(
@@ -102,13 +107,12 @@ const MentionsButton = () => {
           schema={Schema}
           title={Schema.title}
           onChangeField={(id, value) => {
-            const formData = {
+            setFormdata({
               ...formData,
               [id]: value,
-              properties: properties[value]
-            };
-            setFormdata(formData);
-            if(!value) {
+              properties: properties[value],
+            });
+            if (!value) {
               unwrapMention(editor);
             } else {
               submitHandler(formData);
@@ -124,7 +128,7 @@ const MentionsButton = () => {
             setSelection(editor.selection);
             const mention = getActiveMentions(editor);
             if (mention) {
-              const [ node ] = mention;
+              const [node] = mention;
               const { data } = node;
               setFormdata(data);
             }

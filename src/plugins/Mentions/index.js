@@ -15,6 +15,6 @@ export default function install(config) {
     'mention',
   ];
 
-  slate.nodeTypesToHighlight.push("mention");
+  slate.nodeTypesToHighlight.push('mention');
   return config;
 }
