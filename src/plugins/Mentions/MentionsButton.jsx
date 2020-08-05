@@ -3,7 +3,7 @@ import { useSlate } from 'slate-react';
 import { Editor, Range, Transforms } from 'slate';
 import { MentionsSchema } from './schema';
 import { ToolbarButton } from 'volto-slate/editor/ui';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 import { SidebarPortal } from '@plone/volto/components';
 
 import mentionsSVG from '@plone/volto/icons/connector.svg';
@@ -19,7 +19,7 @@ export const wrapMention = (editor, data) => {
   const { selection } = editor;
   const isCollapsed = selection && Range.isCollapsed(selection);
   const mention = {
-    type: "mention",
+    type: 'mention',
     data,
   };
 
