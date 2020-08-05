@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-// import { ViewHTMLBlock } from "@plone/volto/components";
 import { widgets } from '~/config';
 
 export const MentionsElement = ({ children, element, mode }) => {
@@ -12,20 +11,6 @@ export const MentionsElement = ({ children, element, mode }) => {
   const Widget = views.getWidget(schema);
   const output = metadata[data.mention];
   const className = 'metadata mention ' + data.mention;
-
-  // // RichText
-  // let output = metadata[data.mention]?.data;
-
-  // if(output) {
-  //   output = ViewHTMLBlock({ data: { html: output }});
-  // } else {
-  //   output = metadata[data.mention]?.title || metadata[data.mention];
-  // }
-
-  // // Array
-  // if(Array.isArray(output)) {
-  //   output = output.join(", ");
-  // }
 
   return (
     <>
