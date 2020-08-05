@@ -1,16 +1,17 @@
 import React from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 // import { ViewHTMLBlock } from "@plone/volto/components";
 import { widgets } from '~/config';
 
 export const MentionsElement = ({ children, element, mode }) => {
   const { views } = widgets;
   const { data = {} } = element;
-  const metadata = useSelector(state => state?.content?.data || {});
+  const metadata = useSelector((state) => state?.content?.data || {});
 
-  const schema = {id: data.mention, ...data.properties};
+  const schema = { id: data.mention, ...data.properties };
   const Widget = views.getWidget(schema);
   const output = metadata[data.mention];
+  const className = 'metadata mention ' + data.mention;
 
   // // RichText
   // let output = metadata[data.mention]?.data;
@@ -29,7 +30,7 @@ export const MentionsElement = ({ children, element, mode }) => {
   return (
     <>
       {mode === 'view' ? (
-        <Widget data={output} schema={schema} className="metadata mention" />
+        <Widget className={className}>{output}</Widget>
       ) : (
         <span className="metadata mention edit">{children}</span>
       )}
