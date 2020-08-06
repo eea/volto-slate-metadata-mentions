@@ -4,11 +4,11 @@ export const MentionsSchema = {
     {
       id: 'default',
       title: 'Default',
-      fields: ['mention'],
+      fields: ['id', 'widget'],
     },
   ],
   properties: {
-    mention: {
+    id: {
       title: 'Metadata',
       description: 'Select metadata to be used',
       factory: 'Choice',
@@ -20,6 +20,10 @@ export const MentionsSchema = {
       enum: ['title', 'description'],
       enumNames: ['Title', 'Description'],
     },
+    widget: {
+      title: 'Display',
+      type: 'string',
+    },
   },
-  required: ['mention'],
+  required: ['id'],
 };

@@ -7,10 +7,9 @@ export const MentionsElement = ({ children, element, mode }) => {
   const { data = {} } = element;
   const metadata = useSelector((state) => state?.content?.data || {});
 
-  const schema = { id: data.mention, ...data.properties };
-  const Widget = views.getWidget(schema);
-  const output = metadata[data.mention];
-  const className = 'metadata mention ' + data.mention;
+  const Widget = views.getWidget(data);
+  const output = metadata[data.id];
+  const className = 'metadata mention ' + data?.id;
 
   return (
     <>

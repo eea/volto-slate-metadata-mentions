@@ -5,7 +5,7 @@ import { MentionsSchema } from './schema';
 import { ToolbarButton } from 'volto-slate/editor/ui';
 import { useSelector } from 'react-redux';
 import { SidebarPortal } from '@plone/volto/components';
-
+import { setSidebarTab } from '@plone/volto/actions';
 import mentionsSVG from '@plone/volto/icons/connector.svg';
 import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 
@@ -55,11 +55,24 @@ export const getActiveMentions = (editor) => {
   return mention;
 };
 
+export const getWidget = (id, schema) => {
+  if (id === 'subjects') {
+    return id;
+  }
+  if (schema?.factory === 'Choice') {
+    return 'choices';
+  }
+  return schema?.widget || schema?.type || id;
+};
+
 const MentionsButton = () => {
   const editor = useSlate();
   const [showForm, setShowForm] = React.useState(false);
   const [selection, setSelection] = React.useState(null);
-  const [formData, setFormdata] = React.useState({});
+  const [formData, setFormdata] = React.useState({
+    id: undefined,
+    widget: undefined,
+  });
 
   // Get Object metadata from global state
   const properties = useSelector(
@@ -69,8 +82,8 @@ const MentionsButton = () => {
     ...MentionsSchema,
     properties: {
       ...MentionsSchema.properties,
-      mention: {
-        ...MentionsSchema.properties.mention,
+      id: {
+        ...MentionsSchema.properties.id,
         choices: Object.keys(properties)
           .map((key) => {
             const val = properties[key];
@@ -85,13 +98,15 @@ const MentionsButton = () => {
   };
 
   const submitHandler = React.useCallback(
-    (formData) => {
+    (data) => {
+      setFormdata(data);
       // TODO: have an algorithm that decides which one is used
-      const { mention } = formData;
-      if (mention) {
+      const { id } = data;
+      if (!!id) {
         Transforms.select(editor, selection);
-        insertMention(editor, { ...formData });
+        insertMention(editor, { ...data });
       } else {
+        Transforms.select(editor, selection);
         unwrapMention(editor);
       }
     },
@@ -102,23 +117,18 @@ const MentionsButton = () => {
 
   return (
     <>
-      <SidebarPortal selected={showForm} tab="sidebar-properties">
+      <SidebarPortal selected={showForm}>
         <InlineForm
           schema={Schema}
           title={Schema.title}
+          formData={formData}
           onChangeField={(id, value) => {
-            setFormdata({
+            submitHandler({
               ...formData,
               [id]: value,
-              properties: properties[value],
+              widget: getWidget(value, properties[value]),
             });
-            if (!value) {
-              unwrapMention(editor);
-            } else {
-              submitHandler(formData);
-            }
           }}
-          formData={formData}
         />
       </SidebarPortal>
       <ToolbarButton
@@ -132,7 +142,7 @@ const MentionsButton = () => {
               const { data } = node;
               setFormdata(data);
             }
-
+            setSidebarTab(1);
             setShowForm(true);
           }
         }}
