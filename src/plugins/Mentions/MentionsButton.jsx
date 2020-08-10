@@ -77,7 +77,7 @@ export const getActiveMentions = (editor) => {
 
 export const getWidget = (id, schema) => {
   if (id === 'subjects') {
-    return id;
+    return 'tags';
   }
   if (schema?.factory === 'Choice') {
     return 'choices';
