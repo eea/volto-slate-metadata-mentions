@@ -1,7 +1,10 @@
 .metadata {
     &.mention {
-        &.edit {
+        &.edit, &.empty {
             background-color: #e6f3ff;
+            &:before {
+                content: '@';
+            }
         }
         &.token {
             display: inline;
@@ -15,5 +18,15 @@
                 margin-left: .2em;
             }
         }
+    }
+}
+
+#default-widget {
+    label {
+        color: #ccc;
+    }
+    input {
+        pointer-events: none;
+        color: #ccc;
     }
 }

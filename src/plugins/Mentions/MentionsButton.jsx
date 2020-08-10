@@ -18,7 +18,6 @@ import editingSVG from '@plone/volto/icons/editing.svg';
 import checkSVG from '@plone/volto/icons/check.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import deleteSVG from '@plone/volto/icons/delete.svg';
-import showSVG from '@plone/volto/icons/show.svg';
 import usePluginToolbar from 'volto-slate/editor/usePluginToolbar';
 
 const messages = defineMessages({
@@ -177,16 +176,6 @@ const MentionsButton = () => {
     () => (
       <>
         <Button.Group>
-          <Button
-            icon
-            basic
-            aria-label={intl.formatMessage(messages.edit)}
-            onMouseDown={() => {
-              console.log('Preview');
-            }}
-          >
-            <Icon name={showSVG} size="18px" />
-          </Button>
           <Button
             icon
             basic

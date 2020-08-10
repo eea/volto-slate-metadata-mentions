@@ -16,9 +16,15 @@ export const MentionsElement = ({ children, element, mode }) => {
     metadata = { ...formData };
   }
 
-  const Widget = views.getWidget(data);
-  const output = metadata[data.id];
-  const className = 'metadata mention ' + data?.id;
+  let output = metadata[data.id];
+  let Widget = views.getWidget(data);
+  let className = 'metadata mention ' + data?.id;
+
+  if (!output && context) {
+    className += ' empty';
+    output = data?.id;
+    Widget = views.getWidget({ widget: 'text' });
+  }
 
   return (
     <>
