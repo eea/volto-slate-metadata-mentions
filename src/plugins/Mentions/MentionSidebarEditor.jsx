@@ -8,7 +8,7 @@ import SidebarPopup from 'volto-slate/futurevolto/SidebarPopup';
 import { useSelector, useDispatch } from 'react-redux';
 import MentionEditor from './MentionEditor';
 import { getActiveMention } from './utils';
-import { useSlate } from 'slate-react';
+import { ReactEditor, useSlate } from 'slate-react';
 import { EDITOR } from './constants';
 
 const MentionSidebarEditor = (props) => {
@@ -16,13 +16,19 @@ const MentionSidebarEditor = (props) => {
   const editor = useSlate();
   const dispatch = useDispatch();
 
+  let selected = ReactEditor.isFocused(editor);
+  if (editor.getBlockProps) {
+    const blockProps = editor.getBlockProps();
+    selected = blockProps.selected;
+  }
+
   const active = getActiveMention(editor);
 
   React.useEffect(() => {
     if (!active) dispatch({ type: EDITOR, show: false });
   }, [active, dispatch]);
 
-  return showEditor && active ? (
+  return selected && showEditor && active ? (
     <SidebarPopup open={true}>
       <MentionEditor />
     </SidebarPopup>
