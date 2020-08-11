@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { widgets } from '~/config';
 import { FormStateContext } from '@plone/volto/components/manage/Form/FormContext';
 import { Leaf, Element } from 'volto-slate/editor/render';
+import { Text } from 'slate';
 
 export const MentionElement = ({ attributes, children, element, mode }) => {
   const { views } = widgets;
@@ -27,15 +28,14 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
     Widget = views.getWidget({ widget: 'text' });
   }
 
-  // console.log(attributes);
-  // console.log(children);
-  // console.log(element);
-  // console.log(mode);
-
   return (
     <>
       {mode === 'view' ? (
-        <Widget className={className}>{output}</Widget>
+        <Widget className={className}>
+          {children.map((child) =>
+            React.cloneElement(child, child.props, output),
+          )}
+        </Widget>
       ) : (
         <span {...attributes} className="metadata mention edit">
           {children}
@@ -44,14 +44,17 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
     </>
   );
 };
-
-// const serializeNodes = (nodes) => {
+// {/* {serializeNodes(children, output)} */}
+//
+// const serializeNodes = (nodes, output) => {
+//   // console.log('serialize', nodes, output);
 //   let index = 0;
-
+//
 //   const _serializeNodes = (nodes) =>
 //     (nodes || []).map((node, i) => {
 //       const id = index++;
-
+//
+//       console.log('text node', node);
 //       if (Text.isText(node)) {
 //         return (
 //           <Leaf
@@ -61,10 +64,12 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
 //             mode="view"
 //             key={id}
 //           >
-//             {node.text}
+//             {output}
 //           </Leaf>
 //         );
 //       }
+//       // return _serializeNodes(node.children);
+//       // console.log('node.children', node.children, node);
 //       return (
 //         <Element
 //           element={node}
@@ -76,6 +81,6 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
 //         </Element>
 //       );
 //     });
-
+//
 //   return _serializeNodes(nodes);
 // };
