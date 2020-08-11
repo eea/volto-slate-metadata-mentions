@@ -7,7 +7,6 @@ import briefcaseSVG from '@plone/volto/icons/briefcase.svg';
 import checkSVG from '@plone/volto/icons/check.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import InlineForm from 'volto-slate/futurevolto/InlineForm';
-import SidebarPopup from 'volto-slate/futurevolto/SidebarPopup';
 import { MentionSchema } from './schema';
 import {
   getActiveMention,
@@ -76,42 +75,40 @@ export default () => {
   );
 
   return (
-    <SidebarPopup open={true}>
-      <InlineForm
-        schema={Schema}
-        title={Schema.title}
-        icon={<VoltoIcon size="24px" name={briefcaseSVG} />}
-        onChangeField={(id, value) => {
-          setFormData({
-            ...formData,
-            [id]: value,
-            widget: getMentionWidget(value, properties[value]),
-          });
-        }}
-        formData={formData}
-        headerActions={
-          <>
-            <button
-              onClick={() => {
-                saveDataToEditor(formData);
-                dispatch({ type: EDITOR, show: false });
-                ReactEditor.focus(editor);
-              }}
-            >
-              <VoltoIcon size="24px" name={checkSVG} />
-            </button>
-            <button
-              onClick={() => {
-                dispatch({ type: EDITOR, show: false });
-                setFormData({});
-                ReactEditor.focus(editor);
-              }}
-            >
-              <VoltoIcon size="24px" name={clearSVG} />
-            </button>
-          </>
-        }
-      />
-    </SidebarPopup>
+    <InlineForm
+      schema={Schema}
+      title={Schema.title}
+      icon={<VoltoIcon size="24px" name={briefcaseSVG} />}
+      onChangeField={(id, value) => {
+        setFormData({
+          ...formData,
+          [id]: value,
+          widget: getMentionWidget(value, properties[value]),
+        });
+      }}
+      formData={formData}
+      headerActions={
+        <>
+          <button
+            onClick={() => {
+              saveDataToEditor(formData);
+              dispatch({ type: EDITOR, show: false });
+              ReactEditor.focus(editor);
+            }}
+          >
+            <VoltoIcon size="24px" name={checkSVG} />
+          </button>
+          <button
+            onClick={() => {
+              dispatch({ type: EDITOR, show: false });
+              setFormData({});
+              ReactEditor.focus(editor);
+            }}
+          >
+            <VoltoIcon size="24px" name={clearSVG} />
+          </button>
+        </>
+      }
+    />
   );
 };
