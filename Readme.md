@@ -42,8 +42,8 @@ Before starting make sure your development environment is properly set. See [Vol
             ],
 
             "dependencies": {
-                "@plone/volto": "github:eea/volto#7.6.0-beta.1",
-                "volto-slate": "github:eea/volto-slate#0.3.7"
+                "@plone/volto": "github:eea/volto#7.7.0-beta.1",
+                "volto-slate": "github:eea/volto-slate#0.4.0"
             }
         }
 
