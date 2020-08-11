@@ -1,6 +1,6 @@
 {
-  "name": "volto-slate-metadata-mentions",
-  "version": "0.0.1",
+  "name": "@eeacms/volto-slate-metadata-mentions",
+  "version": "0.1.0",
   "description": "Volto Slate Metadata Mentions Plugin",
   "main": "src/index.js",
   "scripts": {
