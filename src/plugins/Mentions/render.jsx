@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { widgets } from '~/config';
 import { FormStateContext } from '@plone/volto/components/manage/Form/FormContext';
+import { wrapInlineMarkupText } from 'volto-slate/utils';
 
 export const MentionElement = ({ attributes, children, element, mode }) => {
   const { views } = widgets;
@@ -27,11 +28,12 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
     Widget = views.getWidget({ widget: 'text' });
   }
 
+  // <strong>{child}</strong>}
   return (
     <>
       {mode === 'view' ? (
         <Widget value={output} className={className}>
-          {(child) => <strong>{child}</strong>}
+          {(child) => wrapInlineMarkupText(children, (c) => child)}
         </Widget>
       ) : (
         <span {...attributes} className="metadata mention edit">
