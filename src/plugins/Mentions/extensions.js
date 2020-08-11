@@ -1,8 +1,10 @@
-export const withMentions = (editor) => {
+import { MENTION } from './constants';
+
+export const withMention = (editor) => {
   const { isInline } = editor;
 
   editor.isInline = (element) => {
-    return element.type === 'mention' ? true : isInline(element);
+    return element.type === MENTION ? true : isInline(element);
   };
 
   return editor;

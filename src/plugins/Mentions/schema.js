@@ -1,4 +1,4 @@
-export const MentionsSchema = {
+export const MentionSchema = {
   title: 'Insert metadata',
   fieldsets: [
     {
@@ -17,8 +17,6 @@ export const MentionsSchema = {
         ['title', 'Title'],
         ['description', 'Description'],
       ],
-      enum: ['title', 'description'],
-      enumNames: ['Title', 'Description'],
     },
     widget: {
       title: 'Display',

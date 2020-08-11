@@ -1,20 +1,35 @@
 import React from 'react';
-import { withMentions } from './extensions';
-import { MentionsElement } from './render';
-import MentionsButton from './MentionsButton';
 
-export default function install(config) {
+import { MENTION } from './constants';
+import { mention_editor } from './reducers';
+import { MentionElement } from './render';
+import { withMention } from './extensions';
+import MentionButton from './MentionButton';
+import MentionContextButton from './MentionContextButton';
+import MentionSidebarEditor from './MentionSidebarEditor';
+
+export default (config) => {
   const { slate } = config.settings;
-  slate.buttons.mention = (props) => <MentionsButton {...props} />;
-  slate.elements.mention = MentionsElement;
 
-  slate.extensions = [...(slate.extensions || []), withMentions];
+  config.addonReducers = {
+    ...config.addonReducers,
+    mention_editor,
+  };
+
+  slate.buttons.mention = (props) => <MentionButton {...props} />;
+  slate.elements.mention = MentionElement;
+
+  slate.extensions = [...(slate.extensions || []), withMention];
   slate.toolbarButtons = [...(slate.toolbarButtons || []), 'mention'];
   slate.expandedToolbarButtons = [
     ...(slate.expandedToolbarButtons || []),
     'mention',
   ];
 
-  slate.nodeTypesToHighlight.push('mention');
+  slate.contextToolbarButtons.push(MentionContextButton);
+  slate.persistentHelpers.push(MentionSidebarEditor);
+
+  slate.nodeTypesToHighlight.push(MENTION);
+
   return config;
-}
+};
