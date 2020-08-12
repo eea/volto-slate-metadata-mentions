@@ -4,7 +4,6 @@ import { MENTION } from './constants';
 export function insertMention(editor, data) {
   if (editor.savedSelection) {
     const selection = editor.savedSelection;
-    console.log('selection', selection);
 
     if (
       JSON.stringify(selection.anchor.path) !==
@@ -13,8 +12,6 @@ export function insertMention(editor, data) {
       console.warn("Won't insert mention across paths", selection);
       return;
     }
-
-    // const selPathRef = Editor.pathRef(editor, selection.anchor.path);
 
     const res = Array.from(
       Editor.nodes(editor, {
@@ -41,7 +38,6 @@ export function insertMention(editor, data) {
       });
       Transforms.insertNodes(editor, { text: id }, { at: [...path, 0] });
     } else {
-      // console.log('sel', selection);
       const start = Math.min(selection.focus.offset, selection.anchor.offset);
       const { path } = selection.anchor;
       const text = Array(
