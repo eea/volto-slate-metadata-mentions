@@ -45,7 +45,7 @@ export default () => {
     },
   };
 
-  const active = getActiveMention(editor);
+  const [active] = getActiveMention(editor) || [];
   const [mentionNode] = active;
   const isMention = isActiveMention(editor);
 

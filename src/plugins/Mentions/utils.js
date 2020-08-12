@@ -92,21 +92,82 @@ export const unwrapMention = (editor) => {
 
 export const isActiveMention = (editor) => {
   const selection = editor.selection || editor.savedSelection;
-  const [note] = Editor.nodes(editor, {
-    match: (n) => n.type === MENTION,
-    at: selection,
-  });
+  let found = Array.from(
+    Editor.nodes(editor, {
+      match: (n) => n.type === MENTION,
+      at: selection,
+    }) || [],
+  );
+  if (found.length) return true;
 
-  return !!note;
+  if (selection) {
+    const { path } = selection.anchor;
+    const isAtStart =
+      selection.anchor.offset === 0 && selection.focus.offset === 0;
+
+    if (isAtStart) {
+      found = Array.from(
+        Editor.previous(editor, {
+          at: path,
+          // match: (n) => n.type === MENTION,
+        }) || [],
+      );
+      if (found && found[0] && found[0].type === MENTION) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 };
 
-export const getActiveMention = (editor) => {
+/**
+ * getActiveMention.
+ *
+ * @param {Object} editor
+ * @param {String} direction One of 'any', 'backward', 'forward'
+ */
+export const getActiveMention = (editor, direction = 'any') => {
   const selection = editor.selection || editor.savedSelection;
-  const [node] = Editor.nodes(editor, {
-    match: (n) => n.type === MENTION,
-    at: selection,
-  });
-  return node;
+  let found = Array.from(
+    Editor.nodes(editor, {
+      match: (n) => n.type === MENTION,
+      // at: selection,
+    }),
+  );
+  if (found.length) return found[0];
+
+  if (!selection) return false;
+
+  if (direction === 'any' || direction === 'backward') {
+    const { path } = selection.anchor;
+    const isAtStart =
+      selection.anchor.offset === 0 && selection.focus.offset === 0;
+
+    if (isAtStart) {
+      let found = Editor.previous(editor, {
+        at: path,
+      });
+      if (found && found[0].type === MENTION) {
+        return found[0];
+      }
+    }
+  }
+
+  if (direction === 'any' || direction === 'forward') {
+    const { path } = selection.anchor;
+    const isAtStart =
+      selection.anchor.offset === 0 && selection.focus.offset === 0;
+
+    if (isAtStart) {
+      let found = Editor.next(editor, {
+        at: path,
+      });
+      if (found && found[0].type === MENTION) {
+        return found[0];
+      }
+    }
+  }
 };
 
 export const getMentionWidget = (id, schema) => {
@@ -132,7 +193,7 @@ export const getMentionWidget = (id, schema) => {
 };
 
 export function isCursorInMention(editor) {
-  //
+  // TODO: this function is not that great. Better use getActiveMention instead
   const result = Editor.above(editor, {
     match: (n) => n.type === MENTION,
   });

@@ -22,7 +22,7 @@ const MentionSidebarEditor = (props) => {
     selected = blockProps.selected;
   }
 
-  const active = getActiveMention(editor);
+  const [active] = getActiveMention(editor) || [];
 
   React.useEffect(() => {
     if (!active) dispatch({ type: EDITOR, show: false });
