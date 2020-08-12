@@ -20,10 +20,7 @@ import { EDITOR } from './constants';
 export default () => {
   const dispatch = useDispatch();
   const editor = useSlate();
-  const [formData, setFormData] = React.useState({
-    id: undefined,
-    widget: undefined,
-  });
+  const [formData, setFormData] = React.useState({});
 
   // Get Object metadata from global state
   const properties = useSelector(
@@ -54,14 +51,12 @@ export default () => {
 
   // Update the form data based on the current mention
   const mentionRef = React.useRef(null);
-  React.useEffect(() => {
-    if (isMention && !isEqual(mentionNode, mentionRef.current)) {
-      mentionRef.current = mentionNode;
-      setFormData(mentionNode.data || {});
-    } else if (!isMention) {
-      mentionRef.current = null;
-    }
-  }, [mentionNode, isMention, dispatch]);
+  if (isMention && !isEqual(mentionNode, mentionRef.current)) {
+    mentionRef.current = mentionNode;
+    setFormData(mentionNode.data || {});
+  } else if (!isMention) {
+    mentionRef.current = null;
+  }
 
   const saveDataToEditor = React.useCallback(
     (formData) => {

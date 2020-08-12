@@ -115,6 +115,12 @@ export const getMentionWidget = (id, schema) => {
   if (schema?.factory === 'Choice') {
     return 'choices';
   }
+  if (schema?.factory === 'Relation Choice') {
+    return 'relation';
+  }
+  if (schema?.factory === 'Relation List') {
+    return 'relations';
+  }
   return schema?.widget || schema?.type || id;
 };
 
