@@ -149,7 +149,7 @@ export const getActiveMention = (editor, direction = 'any') => {
         at: path,
       });
       if (found && found[0].type === MENTION) {
-        return found[0];
+        return found;
       }
     }
   }
@@ -164,7 +164,7 @@ export const getActiveMention = (editor, direction = 'any') => {
         at: path,
       });
       if (found && found[0].type === MENTION) {
-        return found[0];
+        return found;
       }
     }
   }
