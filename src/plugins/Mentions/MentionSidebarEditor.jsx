@@ -22,11 +22,12 @@ const MentionSidebarEditor = (props) => {
     selected = blockProps.selected;
   }
 
-  const [active] = getActiveMention(editor) || [];
+  const active = getActiveMention(editor) || [];
+  const [activeNode] = active;
 
   React.useEffect(() => {
-    if (!active) dispatch({ type: EDITOR, show: false });
-  }, [active, dispatch]);
+    if (!activeNode) dispatch({ type: EDITOR, show: false });
+  }, [activeNode, dispatch]);
 
   return selected && showEditor && active ? (
     <SidebarPopup open={true}>

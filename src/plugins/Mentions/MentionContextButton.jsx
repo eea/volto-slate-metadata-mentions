@@ -29,6 +29,7 @@ export default (editor) => {
   const dispatch = useDispatch();
   const showEditor = useSelector((state) => state['mention_editor']?.show);
   const active = getActiveMention(editor);
+  const isActive = active && active.length;
 
   const editField = (data) => {
     const field = document.getElementById('field-' + data.id);
@@ -37,7 +38,7 @@ export default (editor) => {
     }
   };
 
-  return isActiveMention(editor) ? (
+  return isActive ? (
     <React.Fragment key="mention">
       <ToolbarButton
         icon={editingSVG}
