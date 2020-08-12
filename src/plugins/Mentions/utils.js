@@ -41,20 +41,26 @@ export function insertMention(editor, data) {
       });
       Transforms.insertNodes(editor, { text: id }, { at: [...path, 0] });
     } else {
-      // console.log('path', selection, selPathRef.current);
-      const text = Array(selection.focus.offset - selection.anchor.offset)
+      // console.log('sel', selection);
+      const start = Math.min(selection.focus.offset, selection.anchor.offset);
+      const { path } = selection.anchor;
+      const text = Array(
+        Math.abs(selection.focus.offset - selection.anchor.offset),
+      )
         .fill('-')
         .join('');
 
       Transforms.transform(editor, {
         type: 'remove_text',
         text,
-        ...selection.anchor,
+        path,
+        offset: start,
       });
       Transforms.transform(editor, {
+        path,
+        offset: start,
         type: 'insert_text',
         text: id,
-        ...selection.anchor,
       });
 
       Transforms.wrapNodes(
@@ -63,10 +69,9 @@ export function insertMention(editor, data) {
         {
           split: true,
           at: {
-            ...selection,
+            path,
             focus: {
-              ...selection.focus,
-              offset: selection.anchor.offset + id.length,
+              offset: start + id.length,
             },
           },
         },
