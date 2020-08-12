@@ -2,7 +2,7 @@ import React from 'react';
 import editingSVG from '@plone/volto/icons/editing.svg';
 import mentionsSVG from '@plone/volto/icons/connector.svg';
 import { useIntl, defineMessages } from 'react-intl';
-import { isActiveMention, getActiveMention, unwrapMention } from './utils';
+import { getActiveMention, unwrapMention } from './utils';
 import clearSVG from '@plone/volto/icons/delete.svg';
 import { ToolbarButton } from 'volto-slate/editor/ui';
 import { EDITOR } from './constants';
@@ -29,7 +29,7 @@ export default (editor) => {
   const dispatch = useDispatch();
   const showEditor = useSelector((state) => state['mention_editor']?.show);
   const active = getActiveMention(editor);
-  const isActive = active && active.length;
+  const isActive = !!(active && active.length);
 
   const editField = (data) => {
     const field = document.getElementById('field-' + data.id);
