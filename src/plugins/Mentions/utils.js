@@ -132,7 +132,7 @@ export const getActiveMention = (editor, direction = 'any') => {
   let found = Array.from(
     Editor.nodes(editor, {
       match: (n) => n.type === MENTION,
-      // at: selection,
+      at: selection,
     }),
   );
   if (found.length) return found[0];

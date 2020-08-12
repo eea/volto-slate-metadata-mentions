@@ -12,7 +12,6 @@ import {
   getActiveMention,
   getMentionWidget,
   insertMention,
-  // isActiveMention,
   unwrapMention,
 } from './utils';
 import { EDITOR } from './constants';
@@ -47,8 +46,7 @@ export default () => {
 
   const active = getActiveMention(editor) || [];
   const [mentionNode] = active;
-  // const isMention = isActiveMention(editor);
-  const isMention = active && active.length;
+  const isMention = !!(active && active.length);
 
   // Update the form data based on the current mention
   const mentionRef = React.useRef(null);
