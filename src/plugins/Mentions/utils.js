@@ -1,11 +1,20 @@
-import { Editor, Transforms, Range } from 'slate'; // Range,
+import { Editor, Text, Transforms, Range } from 'slate'; // Range,
 import { MENTION } from './constants';
 
 export function insertMention(editor, data) {
   if (editor.savedSelection) {
     const selection = editor.savedSelection;
+    console.log('selection', selection);
 
-    const selPathRef = Editor.pathRef(editor, selection.anchor.path);
+    if (
+      JSON.stringify(selection.anchor.path) !==
+      JSON.stringify(selection.focus.path)
+    ) {
+      console.warn("Won't insert mention across paths", selection);
+      return;
+    }
+
+    // const selPathRef = Editor.pathRef(editor, selection.anchor.path);
 
     const res = Array.from(
       Editor.nodes(editor, {
@@ -14,6 +23,7 @@ export function insertMention(editor, data) {
         at: selection,
       }),
     );
+    const id = data.id || 'no-field-selected';
 
     if (res.length) {
       const [, path] = res[0];
@@ -21,21 +31,51 @@ export function insertMention(editor, data) {
         editor,
         { data },
         {
-          at: path ? path : null,
+          at: path,
           match: path ? (n) => n.type === MENTION : null,
         },
       );
+      Transforms.removeNodes(editor, {
+        match: (n) => Text.isText(n),
+        at: [...path, 0],
+      });
+      Transforms.insertNodes(editor, { text: id }, { at: [...path, 0] });
     } else {
+      // console.log('path', selection, selPathRef.current);
+      const text = Array(selection.focus.offset - selection.anchor.offset)
+        .fill('-')
+        .join('');
+
+      Transforms.transform(editor, {
+        type: 'remove_text',
+        text,
+        ...selection.anchor,
+      });
+      Transforms.transform(editor, {
+        type: 'insert_text',
+        text: id,
+        ...selection.anchor,
+      });
+
       Transforms.wrapNodes(
         editor,
         { type: MENTION, data },
-        { split: true, at: selection },
+        {
+          split: true,
+          at: {
+            ...selection,
+            focus: {
+              ...selection.focus,
+              offset: selection.anchor.offset + id.length,
+            },
+          },
+        },
       );
     }
 
     if (data) {
       // If there's data, the mention has been edited, otherwise it's a new mention and we want to edit it
-      Transforms.select(editor, selPathRef.current);
+      // Transforms.select(editor, selPathRef.current);
       Transforms.collapse(editor); // TODO; collapse to original offset
     }
   }
