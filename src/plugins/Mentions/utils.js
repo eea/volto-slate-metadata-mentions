@@ -121,6 +121,12 @@ export const getMentionWidget = (id, schema) => {
   if (schema?.factory === 'Relation List') {
     return 'relations';
   }
+  if (schema?.factory === 'Image') {
+    return 'image';
+  }
+  if (schema?.factory === 'File') {
+    return 'file';
+  }
   return schema?.widget || schema?.type || id;
 };
 

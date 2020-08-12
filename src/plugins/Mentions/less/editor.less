@@ -23,6 +23,18 @@
                 margin-left: .2em;
             }
         }
+        &.image {
+            img {
+                max-width: 100%;
+                margin-right: auto;
+                margin-left: auto;
+            }
+        }
+        &.file::after {
+            content: "(" attr(data-size-fmt) ")";
+            color: #ccc;
+            margin-left: .2em;
+        }
     }
 }
 
