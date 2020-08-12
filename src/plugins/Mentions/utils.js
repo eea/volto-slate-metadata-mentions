@@ -1,4 +1,4 @@
-import { Editor, Transforms } from 'slate'; // Range,
+import { Editor, Transforms, Range } from 'slate'; // Range,
 import { MENTION } from './constants';
 
 export function insertMention(editor, data) {
@@ -77,3 +77,22 @@ export const getMentionWidget = (id, schema) => {
   }
   return schema?.widget || schema?.type || id;
 };
+
+export function isCursorInMention(editor) {
+  //
+  const result = Editor.above(editor, {
+    match: (n) => n.type === MENTION,
+  });
+
+  if (!result) {
+    return false;
+  }
+
+  const [mentionWithSelection] = result;
+
+  // whether the selection is inside a mention
+  const mentionCase =
+    Range.isCollapsed(editor.selection) && mentionWithSelection;
+
+  return mentionCase;
+}

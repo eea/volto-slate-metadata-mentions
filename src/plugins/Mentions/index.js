@@ -7,6 +7,7 @@ import { withMention } from './extensions';
 import MentionButton from './MentionButton';
 import MentionContextButton from './MentionContextButton';
 import MentionSidebarEditor from './MentionSidebarEditor';
+import { backspaceInMention, deleteInMention } from './keyboard';
 
 export default (config) => {
   const { slate } = config.settings;
@@ -30,6 +31,8 @@ export default (config) => {
   slate.persistentHelpers.push(MentionSidebarEditor);
 
   slate.nodeTypesToHighlight.push(MENTION);
+  slate.textblockKeyboardHandlers.Backspace.push(backspaceInMention);
+  slate.textblockKeyboardHandlers.Delete.push(deleteInMention);
 
   return config;
 };
