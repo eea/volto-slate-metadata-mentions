@@ -30,12 +30,12 @@ export default (editor) => {
   const showEditor = useSelector((state) => state['mention_editor']?.show);
   const active = getActiveMention(editor);
 
-  const editField = React.useCallback((data) => {
+  const editField = (data) => {
     const field = document.getElementById('field-' + data.id);
     if (field) {
       setTimeout(() => field.scrollIntoView(), 0);
     }
-  }, []);
+  };
 
   return isActiveMention(editor) ? (
     <React.Fragment key="mention">
