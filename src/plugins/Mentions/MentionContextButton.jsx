@@ -24,19 +24,19 @@ const messages = defineMessages({
   },
 });
 
+function scrollIntoView(id) {
+  const field = document.getElementById('field-' + id);
+  if (field) {
+    setTimeout(() => field.scrollIntoView(), 0);
+  }
+}
+
 export default (editor) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const showEditor = useSelector((state) => state['mention_editor']?.show);
   const active = getActiveMention(editor);
   const isActive = !!(active && active.length);
-
-  const editField = (data) => {
-    const field = document.getElementById('field-' + data.id);
-    if (field) {
-      setTimeout(() => field.scrollIntoView(), 0);
-    }
-  };
 
   return isActive ? (
     <React.Fragment key="mention">
@@ -49,7 +49,7 @@ export default (editor) => {
 
           const [mentionNode] = active;
           const { data } = mentionNode;
-          editField(data);
+          scrollIntoView(data.id);
         }}
       />
       <ToolbarButton
