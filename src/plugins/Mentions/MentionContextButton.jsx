@@ -1,13 +1,13 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIntl, defineMessages } from 'react-intl';
+import { setSidebarTab } from '@plone/volto/actions';
+import { ToolbarButton } from 'volto-slate/editor/ui';
+import { getActiveMention, unwrapMention } from './utils';
+import { EDITOR } from './constants';
+import clearSVG from '@plone/volto/icons/delete.svg';
 import editingSVG from '@plone/volto/icons/editing.svg';
 import mentionsSVG from '@plone/volto/icons/connector.svg';
-import { useIntl, defineMessages } from 'react-intl';
-import { getActiveMention, unwrapMention } from './utils';
-import clearSVG from '@plone/volto/icons/delete.svg';
-import { ToolbarButton } from 'volto-slate/editor/ui';
-import { EDITOR } from './constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSidebarTab } from '@plone/volto/actions';
 
 const messages = defineMessages({
   edit: {
