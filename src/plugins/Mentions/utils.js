@@ -59,17 +59,26 @@ export function insertMention(editor, data) {
         text: id,
       });
 
+      const at = {
+        // path,
+        anchor: {
+          path,
+          offset: start,
+        },
+        focus: {
+          path,
+          offset: start + id.length,
+        },
+      };
+
+      // console.log('at', at);
+
       Transforms.wrapNodes(
         editor,
         { type: MENTION, data },
         {
           split: true,
-          at: {
-            path,
-            focus: {
-              offset: start + id.length,
-            },
-          },
+          at,
         },
       );
     }
