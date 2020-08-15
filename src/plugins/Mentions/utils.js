@@ -5,22 +5,31 @@ export function insertMention(editor, data) {
   if (editor.savedSelection) {
     const selection = editor.savedSelection;
 
+    const res = Array.from(
+      Editor.nodes(editor, {
+        match: (n) => n.type === MENTION,
+        // mode: 'highest',
+        at: selection,
+      }),
+    );
+
     if (
       JSON.stringify(selection.anchor.path) !==
-      JSON.stringify(selection.focus.path)
+        JSON.stringify(selection.focus.path) &&
+      !res.length
     ) {
       console.warn("Won't insert mention across paths", selection);
       return;
     }
-
-    const res = Array.from(
-      Editor.nodes(editor, {
-        match: (n) => n.type === MENTION,
-        mode: 'highest',
-        at: selection,
-      }),
-    );
     const id = data.id || 'no-field-selected';
+
+    // console.log('res', res);
+    // console.log('selection', selection);
+    // console.log('real sel', editor.selection);
+    // console.log(JSON.stringify(editor.children));
+    // Array.from(Editor.nodes(editor, { at: [0] })).forEach(([node, path]) => {
+    //   console.log(node, path);
+    // });
 
     if (res.length) {
       const [, path] = res[0];
@@ -71,7 +80,7 @@ export function insertMention(editor, data) {
         },
       };
 
-      // console.log('at', at);
+      const atRef = Editor.rangeRef(editor, at);
 
       Transforms.wrapNodes(
         editor,
@@ -81,12 +90,14 @@ export function insertMention(editor, data) {
           at,
         },
       );
+
+      Transforms.select(editor, atRef.current);
     }
 
     if (data) {
       // If there's data, the mention has been edited, otherwise it's a new mention and we want to edit it
       // Transforms.select(editor, selPathRef.current);
-      Transforms.collapse(editor); // TODO; collapse to original offset
+      // Transforms.collapse(editor); // TODO; collapse to original offset
     }
   }
 }
