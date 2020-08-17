@@ -6,7 +6,7 @@ import { ToolbarButton } from 'volto-slate/editor/ui';
 import { getActiveMention, unwrapMention } from './utils';
 import { EDITOR } from './constants';
 import clearSVG from '@plone/volto/icons/delete.svg';
-import editingSVG from '@plone/volto/icons/editing.svg';
+import editingSVG from '@plone/volto/icons/pen.svg';
 import mentionsSVG from '@plone/volto/icons/connector.svg';
 
 const messages = defineMessages({
