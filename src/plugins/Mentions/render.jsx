@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { widgets } from '~/config';
 import { FormStateContext } from '@plone/volto/components/manage/Form/FormContext';
 import { wrapInlineMarkupText } from 'volto-slate/utils';
+import { Popup, PopupContent } from 'semantic-ui-react';
 
 export const MentionElement = ({ attributes, children, element, mode }) => {
   const { views } = widgets;
@@ -10,6 +11,7 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
   const initialFormData = useSelector((state) => state?.content?.data || {});
   let metadata = { ...initialFormData };
 
+  // Get data from FormContext
   const context = React.useContext(FormStateContext);
   if (context) {
     const { contextData } = context;
@@ -21,14 +23,13 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
   let Widget = views.getWidget(data);
   let className = 'metadata mention ' + data?.id;
 
-  // Get data from FormContext
-  if (!output && context) {
+  // If edit mode and output is empty render it's id
+  if (context && !output) {
     className += ' empty';
     output = data?.id;
-    Widget = views.getWidget({ widget: 'text' });
+    Widget = views.getWidget({ widget: 'default' });
   }
 
-  // <strong>{child}</strong>}
   return (
     <>
       {mode === 'view' ? (
@@ -36,9 +37,19 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
           {(child) => wrapInlineMarkupText(children, (c) => child)}
         </Widget>
       ) : (
-        <span {...attributes} className="metadata mention edit">
-          {children}
-        </span>
+        <Popup
+          wide="very"
+          position="right center"
+          trigger={
+            <span {...attributes} className="metadata mention edit">
+              {children}
+            </span>
+          }
+        >
+          <PopupContent>
+            <Widget value={output} className={className} />
+          </PopupContent>
+        </Popup>
       )}
     </>
   );

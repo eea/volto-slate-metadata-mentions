@@ -23,14 +23,6 @@ export function insertMention(editor, data) {
     }
     const id = data.id || 'no-field-selected';
 
-    // console.log('res', res);
-    // console.log('selection', selection);
-    // console.log('real sel', editor.selection);
-    // console.log(JSON.stringify(editor.children));
-    // Array.from(Editor.nodes(editor, { at: [0] })).forEach(([node, path]) => {
-    //   console.log(node, path);
-    // });
-
     if (res.length) {
       const [, path] = res[0];
       Transforms.setNodes(

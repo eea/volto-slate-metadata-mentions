@@ -45,7 +45,6 @@ export default () => {
   };
 
   const active = getActiveMention(editor) || [];
-  console.log('active mention', active);
   const [mentionNode] = active;
   const isMention = !!(active && active.length);
 
