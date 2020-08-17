@@ -1,5 +1,5 @@
 export const MentionSchema = {
-  title: 'Insert metadata',
+  title: 'Metadata entry',
   fieldsets: [
     {
       id: 'default',
