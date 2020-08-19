@@ -15,12 +15,12 @@ const messages = defineMessages({
     defaultMessage: 'Edit metadata',
   },
   insert: {
-    id: 'Insert metadata',
-    defaultMessage: 'Insert metadata',
+    id: 'Change metadata',
+    defaultMessage: 'Change metadata',
   },
   delete: {
-    id: 'Delete metadata',
-    defaultMessage: 'Delete metadata',
+    id: 'Remove metadata',
+    defaultMessage: 'Remove metadata',
   },
 });
 
@@ -41,6 +41,7 @@ export default (editor) => {
   return isActive ? (
     <React.Fragment key="mention">
       <ToolbarButton
+        title={intl.formatMessage(messages.edit)}
         icon={editingSVG}
         aria-label={intl.formatMessage(messages.edit)}
         onMouseDown={() => {
@@ -53,6 +54,7 @@ export default (editor) => {
         }}
       />
       <ToolbarButton
+        title={intl.formatMessage(messages.insert)}
         icon={mentionsSVG}
         active={showEditor}
         aria-label={intl.formatMessage(messages.insert)}
@@ -61,6 +63,7 @@ export default (editor) => {
         }}
       />
       <ToolbarButton
+        title={intl.formatMessage(messages.delete)}
         icon={clearSVG}
         aria-label={intl.formatMessage(messages.delete)}
         alt={intl.formatMessage(messages.delete)}

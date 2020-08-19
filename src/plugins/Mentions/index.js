@@ -17,7 +17,9 @@ export default (config) => {
     mention_editor,
   };
 
-  slate.buttons.mention = (props) => <MentionButton {...props} />;
+  slate.buttons.mention = (props) => (
+    <MentionButton {...props} title="Insert metadata" />
+  );
   slate.elements.mention = MentionElement;
 
   slate.extensions = [...(slate.extensions || []), withMention];

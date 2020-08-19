@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 
 import './less/editor.less';
 
-const MentionButton = () => {
+const MentionButton = ({ ...props }) => {
   const editor = useSlate();
   const isMention = isActiveMention(editor);
   const dispatch = useDispatch();
@@ -20,6 +20,7 @@ const MentionButton = () => {
     <>
       {hasRangeSelection(editor) && (
         <ToolbarButton
+          {...props}
           active={isMention}
           onMouseDown={() => {
             dispatch({ type: EDITOR, show: true });
