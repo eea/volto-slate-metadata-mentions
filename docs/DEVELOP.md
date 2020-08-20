@@ -23,28 +23,20 @@ Before starting make sure your development environment is properly set. See [Vol
 1. Update `package.json` with the following information:
 
         {
-            "name": "my-volto-project",
-            "description": "My Volto project",
-
-            "private": true,
-
             "scripts": {
                 "develop": "missdev --config=jsconfig.json --output=addons"
             },
 
             "addons": [
                 "volto-slate:asDefault",
+                "@eeacms/volto-widgets-view",
                 "@eeacms/volto-slate-metadata-mentions"
             ],
 
-            "workspaces": [
-                "src/addons/volto-slate-metadata-mentions"
-            ],
-
             "dependencies": {
-                "@plone/volto": "github:eea/volto#7.7.0-beta.2",
-                "volto-slate": "github:eea/volto-slate#0.4.5",
-                "@eeacms/volto-widgets-view": "github:eea/volto-widgets-view#0.2.2"
+                "@plone/volto": "github:eea/volto#7.8.2-beta.2",
+                "volto-slate": "github:eea/volto-slate#0.4.9",
+                "@eeacms/volto-widgets-view": "github:eea/volto-widgets-view#0.2.4"
             }
         }
 
