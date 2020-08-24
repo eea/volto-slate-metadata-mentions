@@ -64,6 +64,9 @@
 
 See [DEVELOP.md](docs/DEVELOP.md).
 
+## See also
+
+* [volto-metadata-block](https://github.com/eea/volto-metadata-block)
 
 ## Copyright and license
 
