@@ -108,7 +108,7 @@ export default (props) => {
             choices: Object.keys(properties)
               .map((key) => {
                 const val = properties[key];
-                if (val?.type !== 'dict') {
+                if (key !== 'id' && val?.type !== 'dict') {
                   return [key, val?.title || key];
                 }
                 return false;
