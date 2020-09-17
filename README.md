@@ -44,8 +44,8 @@
     ],
 
     "dependencies": {
-        "@plone/volto": "github:eea/volto#7.8.2-beta.2",
-        "volto-slate": "github:eea/volto-slate#0.4.9",
+        "@plone/volto": "github:eea/volto#7.14.2-beta.1",
+        "volto-slate": "github:eea/volto-slate#0.6.0",
         "@eeacms/volto-widgets-view": "github:eea/volto-widgets-view#0.2.4"
     }
     ```
@@ -62,7 +62,7 @@
 
 ## How to contribute
 
-See [DEVELOP.md](docs/DEVELOP.md).
+See [DEVELOP.md](DEVELOP.md).
 
 ## See also
 
@@ -73,7 +73,7 @@ See [DEVELOP.md](docs/DEVELOP.md).
 The Initial Owner of the Original Code is European Environment Agency (EEA).
 All Rights Reserved.
 
-See [LICENSE.md](docs/LICENSE.md) for details.
+See [LICENSE.md](LICENSE.md) for details.
 
 ## Funding
 

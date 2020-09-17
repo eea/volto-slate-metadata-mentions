@@ -1,8 +1,7 @@
 import installPlugins from './plugins';
 
 const applyConfig = (config) => {
-  installPlugins(config);
-  return config;
+  return installPlugins(config);
 };
 
 export default applyConfig;

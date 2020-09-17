@@ -1,84 +1,159 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
-import { ReactEditor, useSlate } from 'slate-react';
+import { ReactEditor } from 'slate-react';
+import { useFormStateContext } from '@plone/volto/components/manage/Form/FormContext';
 import { Icon as VoltoIcon } from '@plone/volto/components';
 import briefcaseSVG from '@plone/volto/icons/briefcase.svg';
 import checkSVG from '@plone/volto/icons/check.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import InlineForm from 'volto-slate/futurevolto/InlineForm';
+import { setPluginOptions } from 'volto-slate/actions';
 import { MentionSchema } from './schema';
-import {
-  getActiveMention,
-  getMentionWidget,
-  insertMention,
-  unwrapMention,
-} from './utils';
-import { EDITOR } from './constants';
+import { getMentionWidget } from './utils';
 
-export default () => {
-  const dispatch = useDispatch();
-  const editor = useSlate();
-  const [formData, setFormData] = React.useState({});
+export default (props) => {
+  const {
+    editor,
+    pluginId,
+    getActiveElement,
+    isActiveElement,
+    insertElement,
+    unwrapElement,
+    hasValue,
+  } = props;
 
   // Get Object metadata from global state
   const properties = useSelector(
     (state) => state?.schema?.schema?.properties || {},
   );
-  const Schema = {
-    ...MentionSchema,
-    properties: {
-      ...MentionSchema.properties,
-      id: {
-        ...MentionSchema.properties.id,
-        choices: Object.keys(properties)
-          .map((key) => {
-            const val = properties[key];
-            if (val?.type !== 'dict') {
-              return [key, val?.title || key];
-            }
-            return false;
-          })
-          .filter((val) => !!val),
-      },
-    },
-  };
 
-  const active = getActiveMention(editor) || [];
-  const [mentionNode] = active;
-  const isMention = !!(active && active.length);
+  // Get formData
+  const context = useFormStateContext();
+  const { contextData, setContextData } = context;
+  const metaData = contextData.formData;
 
-  // Update the form data based on the current mention
-  const mentionRef = React.useRef(null);
-  if (isMention && !isEqual(mentionNode, mentionRef.current)) {
-    mentionRef.current = mentionNode;
-    setFormData(mentionNode.data || {});
-  } else if (!isMention) {
-    mentionRef.current = null;
+  const dispatch = useDispatch();
+  const [formData, setFormData] = React.useState({});
+  const [editSchema, setEditSchema] = React.useState(MentionSchema);
+
+  const active = getActiveElement(editor);
+  const [elementNode] = active;
+  const isElement = isActiveElement(editor);
+
+  // Update the form data based on the current footnote
+  const elRef = React.useRef(null);
+
+  if (isElement && !isEqual(elementNode, elRef.current)) {
+    elRef.current = elementNode;
+    const data = elementNode.data
+      ? {
+          ...elementNode.data,
+          [elementNode.data.id]: metaData?.[elementNode.data.id],
+        }
+      : {};
+    setFormData(data);
+  } else if (!isElement) {
+    elRef.current = null;
   }
 
   const saveDataToEditor = React.useCallback(
     (formData) => {
-      if (formData.id) {
-        insertMention(editor, formData);
+      if (hasValue(formData)) {
+        // hasValue(formData) = !!formData.footnote
+        insertElement(editor, { id: formData?.id, widget: formData?.widget });
+
+        // Update document metadata
+        setContextData({
+          ...contextData,
+          formData: {
+            ...metaData,
+            [formData?.id]: formData[formData?.id],
+          },
+        });
       } else {
-        unwrapMention(editor);
+        unwrapElement(editor);
       }
     },
-    [editor],
+    [
+      editor,
+      insertElement,
+      unwrapElement,
+      hasValue,
+      setContextData,
+      contextData,
+      metaData,
+    ],
   );
 
-  return (
-    <InlineForm
-      schema={Schema}
-      title={Schema.title}
-      icon={<VoltoIcon size="24px" name={briefcaseSVG} />}
-      onChangeField={(id, value) => {
+  const updateSchema = React.useCallback(
+    (metaId) => {
+      const extendedFields = metaId ? [metaId] : [];
+      const extendedProperties = metaId ? { [metaId]: properties[metaId] } : {};
+
+      setEditSchema({
+        ...MentionSchema,
+        fieldsets: [
+          ...MentionSchema.fieldsets,
+          {
+            id: 'metadata',
+            title: 'Metadata value',
+            fields: extendedFields,
+          },
+        ],
+        properties: {
+          ...MentionSchema.properties,
+          id: {
+            ...MentionSchema.properties.id,
+            choices: Object.keys(properties)
+              .map((key) => {
+                const val = properties[key];
+                if (key !== 'id' && val?.type !== 'dict') {
+                  return [key, val?.title || key];
+                }
+                return false;
+              })
+              .filter((val) => !!val),
+          },
+          ...extendedProperties,
+        },
+      });
+    },
+    [properties],
+  );
+
+  React.useEffect(() => {
+    const metaId = elementNode?.data?.id;
+    updateSchema(metaId);
+  }, [updateSchema, elementNode?.data?.id]);
+
+  const onChangeValues = React.useCallback(
+    (id, value, formData, setFormData) => {
+      if (id === 'id') {
         setFormData({
           ...formData,
           [id]: value,
           widget: getMentionWidget(value, properties[value]),
+          [value]: metaData[value],
         });
+        updateSchema(value);
+      } else {
+        setFormData({
+          ...formData,
+          [id]: value,
+        });
+      }
+    },
+    [metaData, properties, updateSchema],
+  );
+
+  return (
+    <InlineForm
+      schema={editSchema}
+      title={editSchema.title}
+      icon={<VoltoIcon size="24px" name={briefcaseSVG} />}
+      onChangeField={(id, value) => {
+        onChangeValues(id, value, formData, setFormData);
       }}
       formData={formData}
       headerActions={
@@ -86,7 +161,9 @@ export default () => {
           <button
             onClick={() => {
               saveDataToEditor(formData);
-              dispatch({ type: EDITOR, show: false });
+              dispatch(
+                setPluginOptions(pluginId, { show_sidebar_editor: false }),
+              );
               ReactEditor.focus(editor);
             }}
           >
@@ -94,7 +171,9 @@ export default () => {
           </button>
           <button
             onClick={() => {
-              dispatch({ type: EDITOR, show: false });
+              dispatch(
+                setPluginOptions(pluginId, { show_sidebar_editor: false }),
+              );
               setFormData({});
               ReactEditor.focus(editor);
             }}
