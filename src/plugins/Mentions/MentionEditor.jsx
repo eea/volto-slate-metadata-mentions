@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 import { ReactEditor } from 'slate-react';
-import { useFormStateContext } from '@plone/volto/components/manage/Form/FormContext';
+// import { useFormStateContext } from '@plone/volto/components/manage/Form/FormContext';
 import { Icon as VoltoIcon } from '@plone/volto/components';
 import briefcaseSVG from '@plone/volto/icons/briefcase.svg';
 import checkSVG from '@plone/volto/icons/check.svg';
@@ -29,9 +29,10 @@ export default (props) => {
   );
 
   // Get formData
-  const context = useFormStateContext();
-  const { contextData, setContextData } = context;
-  const metaData = contextData.formData;
+  // const context = useFormStateContext();
+  // const { contextData, setContextData } = context;
+  // const metaData = contextData.formData;
+  const metaData = editor.getBlockProps().properties;
 
   const dispatch = useDispatch();
   const [formData, setFormData] = React.useState({});
@@ -59,18 +60,13 @@ export default (props) => {
 
   const saveDataToEditor = React.useCallback(
     (formData) => {
+      const { onChangeField } = editor.getBlockProps(); // TODO: provide fake block props in volto-slate. onChangeField is onChange
       if (hasValue(formData)) {
         // hasValue(formData) = !!formData.footnote
         insertElement(editor, { id: formData?.id, widget: formData?.widget });
 
         // Update document metadata
-        setContextData({
-          ...contextData,
-          formData: {
-            ...metaData,
-            [formData?.id]: formData[formData?.id],
-          },
-        });
+        onChangeField(formData?.id, formData[formData?.id]);
       } else {
         unwrapElement(editor);
       }
@@ -80,9 +76,9 @@ export default (props) => {
       insertElement,
       unwrapElement,
       hasValue,
-      setContextData,
-      contextData,
-      metaData,
+      // setContextData,
+      // contextData,
+      // metaData,
     ],
   );
 
@@ -129,6 +125,7 @@ export default (props) => {
 
   const onChangeValues = React.useCallback(
     (id, value, formData, setFormData) => {
+      const metaData = editor.getBlockProps().properties;
       if (id === 'id') {
         setFormData({
           ...formData,
@@ -144,7 +141,7 @@ export default (props) => {
         });
       }
     },
-    [metaData, properties, updateSchema],
+    [editor, properties, updateSchema],
   );
 
   return (
@@ -153,7 +150,7 @@ export default (props) => {
       title={editSchema.title}
       icon={<VoltoIcon size="24px" name={briefcaseSVG} />}
       onChangeField={(id, value) => {
-        onChangeValues(id, value, formData, setFormData);
+        onChangeValues(id, value);
       }}
       formData={formData}
       headerActions={
