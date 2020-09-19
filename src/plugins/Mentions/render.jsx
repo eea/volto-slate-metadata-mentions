@@ -1,9 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { widgets } from '~/config';
-import { FormStateContext } from '@plone/volto/components/manage/Form/FormContext';
+// import { FormStateContext } from '@plone/volto/components/manage/Form/FormContext';
 import { wrapInlineMarkupText } from 'volto-slate/utils';
 import { Popup, PopupContent } from 'semantic-ui-react';
+import { EditorContext } from 'slate-react/hooks/use-editor';
 
 export const MentionElement = ({ attributes, children, element, mode }) => {
   const { views } = widgets;
@@ -12,11 +13,13 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
   let metadata = { ...initialFormData };
 
   // Get data from FormContext
-  const context = React.useContext(FormStateContext);
-  if (context) {
-    const { contextData } = context;
-    const { formData } = contextData;
-    metadata = { ...formData };
+  const editor = React.useContext(EditorContext);
+  if (editor) {
+    const { properties } = editor.getBlockProps();
+    metadata = properties;
+    // const { contextData } = context;
+    // const { formData } = contextData;
+    // metadata = { ...formData };
   }
 
   let output = metadata[data.id];
@@ -24,7 +27,7 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
   let className = 'metadata mention ' + data?.id;
 
   // If edit mode and output is empty render it's id
-  if (context && !output) {
+  if (editor && !output) {
     className += ' empty';
     output = data?.id;
     Widget = views.getWidget({ widget: 'default' });
