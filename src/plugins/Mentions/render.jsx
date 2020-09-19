@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { widgets } from '~/config';
-// import { FormStateContext } from '@plone/volto/components/manage/Form/FormContext';
 import { wrapInlineMarkupText } from 'volto-slate/utils';
 import { Popup, PopupContent } from 'semantic-ui-react';
-import { EditorContext } from 'slate-react/hooks/use-editor';
+import { useEditorContext } from 'volto-slate/hooks';
 
 export const MentionElement = ({ attributes, children, element, mode }) => {
   const { views } = widgets;
@@ -12,14 +11,13 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
   const initialFormData = useSelector((state) => state?.content?.data || {});
   let metadata = { ...initialFormData };
 
-  // Get data from FormContext
-  const editor = React.useContext(EditorContext);
+  // Get data from the editor, if it exists. The editor has up to date block
+  // props
+  const editor = useEditorContext();
+
   if (editor) {
-    const { properties } = editor.getBlockProps();
-    metadata = properties;
-    // const { contextData } = context;
-    // const { formData } = contextData;
-    // metadata = { ...formData };
+    const blockProps = editor.getBlockProps();
+    metadata = blockProps.properties;
   }
 
   let output = metadata[data.id];

@@ -124,7 +124,7 @@ export default (props) => {
   }, [updateSchema, elementNode?.data?.id]);
 
   const onChangeValues = React.useCallback(
-    (id, value, formData, setFormData) => {
+    (id, value) => {
       const metaData = editor.getBlockProps().properties;
       if (id === 'id') {
         setFormData({
@@ -141,7 +141,7 @@ export default (props) => {
         });
       }
     },
-    [editor, properties, updateSchema],
+    [editor, properties, updateSchema, formData],
   );
 
   return (
