@@ -22,6 +22,7 @@ const messages = defineMessages({
 
 export default (config) => {
   const opts = {
+    title: 'Metadata',
     pluginId: MENTION,
     pluginEditor: MentionEditor,
     elementType: MENTION,
