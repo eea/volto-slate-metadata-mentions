@@ -32,7 +32,8 @@ export default (props) => {
   // const context = useFormStateContext();
   // const { contextData, setContextData } = context;
   // const metaData = contextData.formData;
-  const metaData = editor.getBlockProps().properties;
+  const metaData =
+    editor.getBlockProps().metadata || editor.getBlockProps().properties;
 
   const dispatch = useDispatch();
   const [formData, setFormData] = React.useState({});
@@ -125,7 +126,8 @@ export default (props) => {
 
   const onChangeValues = React.useCallback(
     (id, value) => {
-      const metaData = editor.getBlockProps().properties;
+      const metaData =
+        editor.getBlockProps().metadata || editor.getBlockProps().properties;
       if (id === 'id') {
         setFormData({
           ...formData,

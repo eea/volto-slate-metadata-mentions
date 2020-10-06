@@ -17,7 +17,7 @@ export const MentionElement = ({ attributes, children, element, mode }) => {
 
   if (editor) {
     const blockProps = editor.getBlockProps();
-    metadata = blockProps.properties;
+    metadata = blockProps.metadata || blockProps.properties;
   }
 
   let output = metadata[data.id];
