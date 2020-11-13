@@ -1,49 +1,59 @@
 .metadata {
-    &.mention {
-        &.edit, &.empty {
-            background-color: #e6f3ff;
-        }
-        &.token {
-            display: inline;
-            .container {
-                display: inline;
-            }
-        }
-        &.array {
-            display: inline;
-            span {
-                margin-left: .2em;
-            }
-        }
-        &.relations {
-            a {
-                margin-left: .2em;
-            }
-        }
-        &.relation {
-            display: list-item;
-        }
-        &.image {
-            img {
-                max-width: 100%;
-                margin-right: auto;
-                margin-left: auto;
-            }
-        }
-        &.file::after {
-            content: "(" attr(data-size-fmt) ")";
-            color: #ccc;
-            margin-left: .2em;
-        }
+  &.mention {
+    &.edit,
+    &.empty {
+      background-color: #e6f3ff;
     }
+
+    &.token {
+      display: inline;
+
+      .container {
+        display: inline;
+      }
+    }
+
+    &.array {
+      display: inline;
+
+      span {
+        margin-left: 0.2em;
+      }
+    }
+
+    &.relations {
+      a {
+        margin-left: 0.2em;
+      }
+    }
+
+    &.relation {
+      display: list-item;
+    }
+
+    &.image {
+      img {
+        max-width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+      }
+    }
+
+    &.file::after {
+      margin-left: 0.2em;
+      color: #ccc;
+      content: '(' attr(data-size-fmt) ')';
+    }
+  }
 }
 
 #default-widget {
-    label {
-        color: #ccc;
-    }
-    input {
-        pointer-events: none;
-        color: #ccc;
-    }
+  label {
+    color: #ccc;
+  }
+
+  input {
+    color: #ccc;
+    pointer-events: none;
+  }
 }
