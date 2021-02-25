@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { widgets } from '~/config';
+import config from '@plone/volto/registry';
 import { wrapInlineMarkupText } from 'volto-slate/utils';
 import { Popup, PopupContent } from 'semantic-ui-react';
 import { useEditorContext } from 'volto-slate/hooks';
 
 export const MentionElement = ({ attributes, children, element, mode }) => {
-  const { views } = widgets;
+  const { views } = config.widgets;
   const { data = {} } = element;
   const initialFormData = useSelector((state) => state?.content?.data || {});
   let metadata = { ...initialFormData };
