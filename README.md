@@ -50,7 +50,7 @@
    ],
 
    "dependencies": {
-       "@eeacms/volto-slate-metadata-mentions": "^1.0.0"
+       "@eeacms/volto-slate-metadata-mentions": "^2.0.0"
    }
    ```
 
