@@ -14,8 +14,9 @@ Before starting make sure your development environment is properly set. See [Vol
 
         $ yo @plone/volto my-volto-project \
                           --workspace src/addons/volto-slate-metadata-mentions \
-                          --addon volto-slate:asDefault \
-                          --addon @eeacms/volto-slate-metadata-mentions
+                          --addon @eeacms/volto-slate-metadata-mentions \
+                          --no-interactive \
+                          --skip-install
         $ cd my-volto-project
 
 1.  Add the following to `mrs.developer.json`:
