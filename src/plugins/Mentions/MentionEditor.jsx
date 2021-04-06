@@ -7,7 +7,7 @@ import { Icon as VoltoIcon } from '@plone/volto/components';
 import briefcaseSVG from '@plone/volto/icons/briefcase.svg';
 import checkSVG from '@plone/volto/icons/check.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
-import InlineForm from 'volto-slate/futurevolto/InlineForm';
+import { InlineForm } from '@plone/volto/components';
 import { setPluginOptions } from 'volto-slate/actions';
 import { MentionSchema } from './schema';
 import { getMentionWidget } from './utils';
