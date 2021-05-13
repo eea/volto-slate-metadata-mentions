@@ -1,13 +1,12 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { isEqual } from 'lodash';
-import { ReactEditor } from 'slate-react';
 // import { useFormStateContext } from '@plone/volto/components/manage/Form/FormContext';
-import { Icon as VoltoIcon } from '@plone/volto/components';
+import { Icon as VoltoIcon, InlineForm } from '@plone/volto/components';
 import briefcaseSVG from '@plone/volto/icons/briefcase.svg';
 import checkSVG from '@plone/volto/icons/check.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
-import { InlineForm } from '@plone/volto/components';
+import { isEqual } from 'lodash';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ReactEditor } from 'slate-react';
 import { setPluginOptions } from 'volto-slate/actions';
 import { MentionSchema } from './schema';
 import { getMentionWidget } from './utils';
@@ -146,6 +145,12 @@ export default (props) => {
     [editor, properties, updateSchema, formData],
   );
 
+  const checkForCancel = () => {
+    if (!elementNode.data.id) {
+      unwrapElement(editor);
+    }
+  };
+
   return (
     <InlineForm
       schema={editSchema}
@@ -170,6 +175,7 @@ export default (props) => {
           </button>
           <button
             onClick={() => {
+              checkForCancel();
               dispatch(
                 setPluginOptions(pluginId, { show_sidebar_editor: false }),
               );
