@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-slate-metadata-mentions",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "description": "Volto Slate Metadata Mentions Plugin",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -24,8 +24,8 @@
     "@eeacms/volto-widgets-view"
   ],
   "dependencies": {
-    "volto-slate": ">=2.7.1",
-    "@eeacms/volto-widgets-view": ">=2.1.2"
+    "volto-slate": "*",
+    "@eeacms/volto-widgets-view": "*"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",
