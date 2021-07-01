@@ -9,6 +9,7 @@ import { omit } from 'lodash';
 import { ToolbarButton } from 'volto-slate/editor/ui';
 import { hasRangeSelection } from 'volto-slate/utils';
 import { setPluginOptions } from 'volto-slate/actions';
+import config from '@plone/volto/registry';
 
 const ElementToolbarButton = (props) => {
   const { isActiveElement, insertElement, pluginId, toolbarButtonIcon } = props;
@@ -23,9 +24,14 @@ const ElementToolbarButton = (props) => {
     'isActiveElement',
   ];
 
+  const properties = editor.getBlockProps();
+  const visible = config.settings.layoutOnlySlateMetadataMentions
+    ? properties?.manage
+    : true;
+
   return (
     <>
-      {hasRangeSelection(editor) && (
+      {visible && hasRangeSelection(editor) && (
         <ToolbarButton
           {...omit(props, ...omittedProps)}
           active={isElement}
