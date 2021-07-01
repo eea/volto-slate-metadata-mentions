@@ -24,7 +24,7 @@ const ElementToolbarButton = (props) => {
     'isActiveElement',
   ];
 
-  const properties = editor.getBlockProps();
+  const properties = editor?.getBlockProps?.() || {};
   const visible = config.settings.layoutOnlySlateMetadataMentions
     ? properties?.manage
     : true;
