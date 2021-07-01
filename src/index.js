@@ -5,6 +5,11 @@ const applyConfig = (config) => {
   if (!config.widgets.view) {
     config = installWidgetsView(config);
   }
+
+  // Restrict slate metadata mentions to Layout only
+  config.settings.layoutOnlySlateMetadataMentions =
+    config.settings.layoutOnlySlateMetadataMentions ?? false;
+
   return installPlugins(config);
 };
 
