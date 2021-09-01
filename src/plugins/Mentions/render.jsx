@@ -23,7 +23,7 @@ export const MentionElement = ({
 
   if (editor) {
     const blockProps = editor.getBlockProps();
-    metadata = blockProps.metadata || blockProps.properties;
+    metadata = blockProps.metadata || blockProps.properties || {};
   }
 
   let output = metadata[data.id];

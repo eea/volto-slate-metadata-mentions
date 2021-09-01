@@ -66,7 +66,7 @@ export default (props) => {
         insertElement(editor, { id: formData?.id, widget: formData?.widget });
 
         // Update document metadata
-        onChangeField(formData?.id, formData[formData?.id]);
+        onChangeField && onChangeField(formData?.id, formData[formData?.id]);
       } else {
         unwrapElement(editor);
       }
@@ -132,7 +132,7 @@ export default (props) => {
           ...formData,
           [id]: value,
           widget: getMentionWidget(value, properties[value]),
-          [value]: metaData[value],
+          [value]: metaData?.[value],
         });
         updateSchema(value);
       } else {
