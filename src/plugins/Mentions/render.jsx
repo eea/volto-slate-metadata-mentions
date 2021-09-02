@@ -4,6 +4,7 @@ import config from '@plone/volto/registry';
 import { wrapInlineMarkupText } from 'volto-slate/utils';
 import { Popup, PopupContent } from 'semantic-ui-react';
 import { useEditorContext } from 'volto-slate/hooks';
+import ErrorBoundary from './ErrorBoundary';
 
 export const MentionElement = ({
   attributes,
@@ -40,9 +41,11 @@ export const MentionElement = ({
   return (
     <>
       {mode === 'view' ? (
-        <Widget value={output} className={className}>
-          {(child) => wrapInlineMarkupText(children, (c) => child)}
-        </Widget>
+        <ErrorBoundary name={data.id}>
+          <Widget value={output} className={className}>
+            {(child) => wrapInlineMarkupText(children, (c) => child)}
+          </Widget>
+        </ErrorBoundary>
       ) : (
         <Popup
           wide="very"
@@ -54,7 +57,9 @@ export const MentionElement = ({
           }
         >
           <PopupContent>
-            <Widget value={output} className={className} />
+            <ErrorBoundary name={data.id}>
+              <Widget value={output} className={className} />
+            </ErrorBoundary>
           </PopupContent>
         </Popup>
       )}
