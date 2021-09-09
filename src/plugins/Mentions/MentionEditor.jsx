@@ -31,8 +31,9 @@ export default (props) => {
   // const context = useFormStateContext();
   // const { contextData, setContextData } = context;
   // const metaData = contextData.formData;
-  const metaData =
-    editor.getBlockProps().metadata || editor.getBlockProps().properties;
+  const metaData = editor.getBlockProps
+    ? editor.getBlockProps().metadata || editor.getBlockProps().properties
+    : {};
 
   const dispatch = useDispatch();
   const [formData, setFormData] = React.useState({});
@@ -60,7 +61,9 @@ export default (props) => {
 
   const saveDataToEditor = React.useCallback(
     (formData) => {
-      const { onChangeField } = editor.getBlockProps(); // TODO: provide fake block props in volto-slate. onChangeField is onChange
+      const { onChangeField } = editor.getBlockProps
+        ? editor.getBlockProps()
+        : {}; // TODO: provide fake block props in volto-slate. onChangeField is onChange
       if (hasValue(formData)) {
         // hasValue(formData) = !!formData.footnote
         insertElement(editor, { id: formData?.id, widget: formData?.widget });
@@ -125,8 +128,9 @@ export default (props) => {
 
   const onChangeValues = React.useCallback(
     (id, value) => {
-      const metaData =
-        editor.getBlockProps().metadata || editor.getBlockProps().properties;
+      const metaData = editor.getBlockProps
+        ? editor.getBlockProps().metadata || editor.getBlockProps().properties
+        : {};
       if (id === 'id') {
         setFormData({
           ...formData,
