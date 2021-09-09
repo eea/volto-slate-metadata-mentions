@@ -2,6 +2,9 @@ SHELL=/bin/bash
 
 DIR=$(shell basename $$(pwd))
 ADDON ?= "@eeacms/volto-slate-metadata-mentions"
+PLONE_ADDONS ?= "eea.schema.slate"
+PLONE_VERSIONS ?= "plone.schema=1.3.0 plone.restapi=8.9.1"
+PLONE_PROFILES ?= "profile-plone.restapi:blocks"
 
 # We like colors
 # From: https://coderwall.com/p/izxssa/colored-makefile-for-golang-projects
@@ -23,6 +26,12 @@ project:
 	@echo "$(RED)Now run: cd project && yarn start$(RESET)"
 
 all: project
+
+.PHONY: start-docker-backend
+start-docker-backend:
+	@echo "$(GREEN)==> Start Plone Backend$(RESET)"
+	docker pull plone
+	docker run -it --rm -e SITE="Plone" -e ADDONS=$(PLONE_ADDONS) -e VERSIONS=$(PLONE_VERSIONS) -e PROFILES=$(PLONE_PROFILES) -p 8080:8080 plone fg
 
 .PHONY: start-test-backend
 start-test-backend: ## Start Test Plone Backend

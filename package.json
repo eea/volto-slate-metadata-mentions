@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-slate-metadata-mentions",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Volto Slate Metadata Mentions Plugin",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -45,6 +45,8 @@
     "prettier:fix": "if [ -d ./project ]; then ./project/node_modules/.bin/prettier --single-quote --write 'src/**/*.{js,jsx,json,css,less,md}'; else ../../../node_modules/.bin/prettier --single-quote --write 'src/**/*.{js,jsx,json,css,less,md}'; fi",
     "lint": "if [ -d ./project ]; then ./project/node_modules/eslint/bin/eslint.js --max-warnings=0 'src/**/*.{js,jsx}'; else ../../../node_modules/eslint/bin/eslint.js --max-warnings=0 'src/**/*.{js,jsx}'; fi",
     "lint:fix": "if [ -d ./project ]; then ./project/node_modules/eslint/bin/eslint.js --fix 'src/**/*.{js,jsx}'; else ../../../node_modules/eslint/bin/eslint.js --fix 'src/**/*.{js,jsx}'; fi",
+    "cypress:backend": "make start-docker-backend",
+    "cypress:frontend": "make && cd project && yarn start",
     "cypress:run": "if [ -d ./project ]; then ./project/node_modules/cypress/bin/cypress run; else ../../../node_modules/cypress/bin/cypress run; fi",
     "cypress:open": "if [ -d ./project ]; then ./project/node_modules/cypress/bin/cypress open; else ../../../node_modules/cypress/bin/cypress open; fi"
   }
