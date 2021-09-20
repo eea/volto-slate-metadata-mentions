@@ -4,7 +4,7 @@ pipeline {
   environment {
         GIT_NAME = "volto-slate-metadata-mentions"
         NAMESPACE = "@eeacms"
-        SONARQUBE_TAGS = "volto.eea.europa.eu,biodiversity.europa.eu,www.eea.europa.eu-ims"
+        SONARQUBE_TAGS = "volto.eea.europa.eu,biodiversity.europa.eu,www.eea.europa.eu-ims,climate-energy.eea.europa.eu"
         DEPENDENCIES = ""
         PLONE_VERSIONS = "plone.schema=1.3.0 plone.restapi=8.9.1"
         PLONE_ADDONS = "eea.schema.slate"
