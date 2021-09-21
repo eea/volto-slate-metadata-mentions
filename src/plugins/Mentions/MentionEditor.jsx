@@ -27,6 +27,8 @@ export default (props) => {
     (state) => state?.schema?.schema?.properties || {},
   );
 
+  const pid = `${editor.uid}-${pluginId}`;
+
   // Get formData
   // const context = useFormStateContext();
   // const { contextData, setContextData } = context;
@@ -170,7 +172,7 @@ export default (props) => {
             onClick={() => {
               saveDataToEditor(formData);
               dispatch(
-                setPluginOptions(pluginId, { show_sidebar_editor: false }),
+                setPluginOptions(pid, { show_sidebar_editor: false }),
               );
               ReactEditor.focus(editor);
             }}
@@ -181,7 +183,7 @@ export default (props) => {
             onClick={() => {
               checkForCancel();
               dispatch(
-                setPluginOptions(pluginId, { show_sidebar_editor: false }),
+                setPluginOptions(pid, { show_sidebar_editor: false }),
               );
               setFormData({});
               ReactEditor.focus(editor);
