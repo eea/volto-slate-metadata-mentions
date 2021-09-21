@@ -171,9 +171,7 @@ export default (props) => {
           <button
             onClick={() => {
               saveDataToEditor(formData);
-              dispatch(
-                setPluginOptions(pid, { show_sidebar_editor: false }),
-              );
+              dispatch(setPluginOptions(pid, { show_sidebar_editor: false }));
               ReactEditor.focus(editor);
             }}
           >
@@ -182,9 +180,7 @@ export default (props) => {
           <button
             onClick={() => {
               checkForCancel();
-              dispatch(
-                setPluginOptions(pid, { show_sidebar_editor: false }),
-              );
+              dispatch(setPluginOptions(pid, { show_sidebar_editor: false }));
               setFormData({});
               ReactEditor.focus(editor);
             }}
