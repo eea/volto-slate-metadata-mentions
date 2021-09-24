@@ -25,6 +25,7 @@ const ElementToolbarButton = (props) => {
   ];
 
   const properties = editor?.getBlockProps?.() || {};
+  const pid = `${editor.uid}-${pluginId}`;
   const visible = config.settings.layoutOnlySlateMetadataMentions
     ? properties?.manage
     : true;
@@ -37,7 +38,7 @@ const ElementToolbarButton = (props) => {
           active={isElement}
           onMouseDown={() => {
             if (!isElement) insertElement(editor, {});
-            dispatch(setPluginOptions(pluginId, { show_sidebar_editor: true }));
+            dispatch(setPluginOptions(pid, { show_sidebar_editor: true }));
           }}
           icon={toolbarButtonIcon}
         />
