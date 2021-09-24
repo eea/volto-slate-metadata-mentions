@@ -27,6 +27,8 @@ export default (props) => {
     (state) => state?.schema?.schema?.properties || {},
   );
 
+  const pid = `${editor.uid}-${pluginId}`;
+
   // Get formData
   // const context = useFormStateContext();
   // const { contextData, setContextData } = context;
@@ -107,10 +109,7 @@ export default (props) => {
             choices: Object.keys(properties)
               .map((key) => {
                 const val = properties[key];
-                if (key !== 'id' && val?.type !== 'dict') {
-                  return [key, val?.title || key];
-                }
-                return false;
+                return [key, val?.title || key];
               })
               .filter((val) => !!val),
           },
@@ -169,9 +168,7 @@ export default (props) => {
           <button
             onClick={() => {
               saveDataToEditor(formData);
-              dispatch(
-                setPluginOptions(pluginId, { show_sidebar_editor: false }),
-              );
+              dispatch(setPluginOptions(pid, { show_sidebar_editor: false }));
               ReactEditor.focus(editor);
             }}
           >
@@ -180,9 +177,7 @@ export default (props) => {
           <button
             onClick={() => {
               checkForCancel();
-              dispatch(
-                setPluginOptions(pluginId, { show_sidebar_editor: false }),
-              );
+              dispatch(setPluginOptions(pid, { show_sidebar_editor: false }));
               setFormData({});
               ReactEditor.focus(editor);
             }}
