@@ -36,6 +36,10 @@ const omittedProps = [
   'persistentHelper',
 ];
 
+const btnFactory = (options) => (props) => (
+  <ToolbarButton {...props} {...options} title="Metadata" />
+);
+
 export default (config) => {
   const opts = {
     title: 'Metadata',
@@ -63,13 +67,7 @@ export default (config) => {
   ];
 
   // Custom mention Toolbar Button
-  slate.buttons['mention'] = (props) => (
-    <ToolbarButton
-      {...props}
-      title="Metadata"
-      {...omit(pluginOptions, omittedProps)}
-    />
-  );
+  slate.buttons['mention'] = btnFactory(omit(pluginOptions, omittedProps));
 
   return config;
 };
