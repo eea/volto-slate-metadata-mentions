@@ -23,11 +23,9 @@
     "volto-slate",
     "@eeacms/volto-widgets-view"
   ],
-  "dependencies": {
-    "@eeacms/volto-widgets-view": "*"
-  },
   "peerDependencies": {
-    "volto-slate": "*"
+    "volto-slate": "*",
+    "@eeacms/volto-widgets-view": "*"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",
