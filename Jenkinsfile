@@ -4,7 +4,7 @@ pipeline {
   environment {
         GIT_NAME = "volto-slate-metadata-mentions"
         NAMESPACE = "@eeacms"
-        SONARQUBE_TAGS = "volto.eea.europa.eu,biodiversity.europa.eu,www.eea.europa.eu-ims,climate-energy.eea.europa.eu"
+        SONARQUBE_TAGS = "volto.eea.europa.eu,biodiversity.europa.eu,www.eea.europa.eu-ims,climate-energy.eea.europa.eu,sustainability.eionet.europa.eu,forest.eea.europa.eu,clms.land.copernicus.eu,industry.eea.europa.eu,water.europa.eu-freshwater"
         DEPENDENCIES = ""
         PLONE_VERSIONS = "plone.schema=1.3.0 plone.restapi=8.9.1"
         PLONE_ADDONS = "eea.schema.slate"
@@ -12,7 +12,31 @@ pipeline {
 
   stages {
 
+    stage('Release') {
+      when {
+        allOf {
+          environment name: 'CHANGE_ID', value: ''
+          branch 'master'
+        }
+      }
+      steps {
+        node(label: 'docker') {
+          withCredentials([string(credentialsId: 'eea-jenkins-token', variable: 'GITHUB_TOKEN'),string(credentialsId: 'eea-jenkins-npm-token', variable: 'NPM_TOKEN')]) {
+            sh '''docker pull eeacms/gitflow'''
+            sh '''docker run -i --rm --name="$BUILD_TAG-gitflow-master" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_NAME="$GIT_NAME" -e GIT_TOKEN="$GITHUB_TOKEN" -e NPM_TOKEN="$NPM_TOKEN" -e LANGUAGE=javascript eeacms/gitflow'''
+          }
+        }
+      }
+    }
+
     stage('Code') {
+      when {
+        allOf {
+          environment name: 'CHANGE_ID', value: ''
+          not { changelog '.*^Automated release [0-9\\.]+$' }
+          not { branch 'master' }
+        }
+      }
       steps {
         parallel(
 
@@ -38,6 +62,15 @@ pipeline {
     }
 
     stage('Tests') {
+      when {
+        allOf {
+          environment name: 'CHANGE_ID', value: ''
+          anyOf {
+           not { changelog '.*^Automated release [0-9\\.]+$' }
+           branch 'master'
+          }
+        }
+      }
       steps {
         parallel(
 
@@ -77,6 +110,15 @@ pipeline {
     }
 
     stage('Integration tests') {
+      when {
+        allOf {
+          environment name: 'CHANGE_ID', value: ''
+          anyOf {
+           not { changelog '.*^Automated release [0-9\\.]+$' }
+           branch 'master'
+          }
+        }
+      }
       steps {
         parallel(
 
@@ -124,10 +166,16 @@ pipeline {
     }
 
     stage('Report to SonarQube') {
-      // Exclude Pull-Requests
       when {
         allOf {
           environment name: 'CHANGE_ID', value: ''
+          anyOf {
+            branch 'master'
+            allOf {
+              branch 'develop'
+              not { changelog '.*^Automated release [0-9\\.]+$' }
+            }
+          }
         }
       }
       steps {
@@ -158,30 +206,13 @@ pipeline {
       steps {
         node(label: 'docker') {
           script {
-            if ( env.CHANGE_BRANCH != "develop" &&  !( env.CHANGE_BRANCH.startsWith("hotfix")) ) {
-                error "Pipeline aborted due to PR not made from develop or hotfix branch"
+            if ( env.CHANGE_BRANCH != "develop" ) {
+                error "Pipeline aborted due to PR not made from develop branch"
             }
            withCredentials([string(credentialsId: 'eea-jenkins-token', variable: 'GITHUB_TOKEN')]) {
             sh '''docker pull eeacms/gitflow'''
             sh '''docker run -i --rm --name="$BUILD_TAG-gitflow-pr" -e GIT_CHANGE_TARGET="$CHANGE_TARGET" -e GIT_CHANGE_BRANCH="$CHANGE_BRANCH" -e GIT_CHANGE_AUTHOR="$CHANGE_AUTHOR" -e GIT_CHANGE_TITLE="$CHANGE_TITLE" -e GIT_TOKEN="$GITHUB_TOKEN" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" -e GIT_ORG="$GIT_ORG" -e GIT_NAME="$GIT_NAME" -e LANGUAGE=javascript eeacms/gitflow'''
            }
-          }
-        }
-      }
-    }
-
-    stage('Release') {
-      when {
-        allOf {
-          environment name: 'CHANGE_ID', value: ''
-          branch 'master'
-        }
-      }
-      steps {
-        node(label: 'docker') {
-          withCredentials([string(credentialsId: 'eea-jenkins-token', variable: 'GITHUB_TOKEN'),string(credentialsId: 'eea-jenkins-npm-token', variable: 'NPM_TOKEN')]) {
-            sh '''docker pull eeacms/gitflow'''
-            sh '''docker run -i --rm --name="$BUILD_TAG-gitflow-master" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_NAME="$GIT_NAME" -e GIT_TOKEN="$GITHUB_TOKEN" -e NPM_TOKEN="$NPM_TOKEN" -e LANGUAGE=javascript eeacms/gitflow'''
           }
         }
       }
