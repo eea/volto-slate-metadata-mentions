@@ -17,6 +17,7 @@ export const MentionElement = ({
   const { data = {} } = element;
   const initialFormData = useSelector((state) => state?.content?.data || {});
   let metadata = { ...(extras?.metadata || initialFormData) };
+  const id = data?.metadata || data?.id;
 
   // Get data from the editor, if it exists. The editor has up to date block
   // props
@@ -27,21 +28,21 @@ export const MentionElement = ({
     metadata = blockProps.metadata || blockProps.properties || {};
   }
 
-  let output = metadata[data.id];
+  let output = metadata[id];
   let Widget = views.getWidget(data);
-  let className = 'metadata mention ' + data?.id;
+  let className = 'metadata mention ' + id;
 
   // If edit mode and output is empty render it's id
   if (editor && !output) {
     className += ' empty';
-    output = data?.id;
+    output = id;
     Widget = views.getWidget({ widget: 'default' });
   }
 
   return (
     <>
       {mode === 'view' ? (
-        <ErrorBoundary name={data.id}>
+        <ErrorBoundary name={id}>
           <Widget value={output} className={className}>
             {(child) => wrapInlineMarkupText(children, (c) => child)}
           </Widget>
@@ -57,7 +58,7 @@ export const MentionElement = ({
           }
         >
           <PopupContent>
-            <ErrorBoundary name={data.id}>
+            <ErrorBoundary name={id}>
               <Widget value={output} className={className} />
             </ErrorBoundary>
           </PopupContent>

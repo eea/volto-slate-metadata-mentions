@@ -44,6 +44,7 @@ export default (props) => {
   const active = getActiveElement(editor);
   const [elementNode] = active;
   const isElement = isActiveElement(editor);
+  const id = elementNode?.data?.metadata || elementNode?.data?.id;
 
   // Update the form data based on the current footnote
   const elRef = React.useRef(null);
@@ -53,7 +54,7 @@ export default (props) => {
     const data = elementNode.data
       ? {
           ...elementNode.data,
-          [elementNode.data.id]: metaData?.[elementNode.data.id],
+          [id]: metaData?.[id],
         }
       : {};
     setFormData(data);
@@ -68,10 +69,14 @@ export default (props) => {
         : {}; // TODO: provide fake block props in volto-slate. onChangeField is onChange
       if (hasValue(formData)) {
         // hasValue(formData) = !!formData.footnote
-        insertElement(editor, { id: formData?.id, widget: formData?.widget });
+        insertElement(editor, {
+          metadata: formData?.metadata,
+          widget: formData?.widget,
+        });
 
         // Update document metadata
-        onChangeField && onChangeField(formData?.id, formData[formData?.id]);
+        onChangeField &&
+          onChangeField(formData?.metadata, formData?.[formData?.metadata]);
       } else {
         unwrapElement(editor);
       }
@@ -104,8 +109,8 @@ export default (props) => {
         ],
         properties: {
           ...MentionSchema.properties,
-          id: {
-            ...MentionSchema.properties.id,
+          metadata: {
+            ...MentionSchema.properties.metadata,
             choices: Object.keys(properties)
               .map((key) => {
                 const val = properties[key];
@@ -121,16 +126,16 @@ export default (props) => {
   );
 
   React.useEffect(() => {
-    const metaId = elementNode?.data?.id;
+    const metaId = id;
     updateSchema(metaId);
-  }, [updateSchema, elementNode?.data?.id]);
+  }, [updateSchema, id]);
 
   const onChangeValues = React.useCallback(
     (id, value) => {
       const metaData = editor.getBlockProps
         ? editor.getBlockProps().metadata || editor.getBlockProps().properties
         : {};
-      if (id === 'id') {
+      if (id === 'metadata') {
         setFormData({
           ...formData,
           [id]: value,
@@ -149,7 +154,7 @@ export default (props) => {
   );
 
   const checkForCancel = () => {
-    if (!elementNode.data.id) {
+    if (!id) {
       unwrapElement(editor);
     }
   };
