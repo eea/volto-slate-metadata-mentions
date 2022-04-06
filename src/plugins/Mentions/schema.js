@@ -4,15 +4,13 @@ export const MentionSchema = {
     {
       id: 'default',
       title: 'Default',
-      fields: ['id', 'widget'],
+      fields: ['metadata', 'widget'],
     },
   ],
   properties: {
-    id: {
+    metadata: {
       title: 'Metadata',
       description: 'Select metadata to be used',
-      factory: 'Choice',
-      type: 'string',
       choices: [
         ['title', 'Title'],
         ['description', 'Description'],
@@ -23,5 +21,5 @@ export const MentionSchema = {
       type: 'string',
     },
   },
-  required: ['id'],
+  required: ['metadata'],
 };

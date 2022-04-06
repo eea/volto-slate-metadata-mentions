@@ -50,7 +50,7 @@ export default (config) => {
     isInlineElement: true,
     editSchema: MentionSchema,
     extensions: [withMention],
-    hasValue: (formData) => !!formData.id,
+    hasValue: (formData) => !!(formData.metadata || formData.id),
     toolbarButtonIcon: mentionsSVG,
     messages,
   };
