@@ -20,11 +20,9 @@
     "url": "git@github.com:eea/volto-slate-metadata-mentions.git"
   },
   "addons": [
-    "volto-slate",
     "@eeacms/volto-widgets-view"
   ],
   "dependencies": {
-    "volto-slate": "*",
     "@eeacms/volto-widgets-view": "*"
   },
   "devDependencies": {
