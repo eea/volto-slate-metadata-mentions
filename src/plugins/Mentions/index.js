@@ -7,7 +7,7 @@ import { MentionSchema } from './schema';
 import MentionEditor from './MentionEditor';
 import ToolbarButton from './ToolbarButton';
 import mentionsSVG from '@plone/volto/icons/connector.svg';
-import { makeInlineElementPlugin } from 'volto-slate/components/ElementEditor';
+import { makeInlineElementPlugin } from '@plone/volto-slate/elementEditor';
 import { omit } from 'lodash';
 
 import './less/editor.less';
