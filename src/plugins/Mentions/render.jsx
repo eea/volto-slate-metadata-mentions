@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import config from '@plone/volto/registry';
-import { wrapInlineMarkupText } from 'volto-slate/utils';
+import { wrapInlineMarkupText } from '@plone/volto-slate/utils';
 import { Popup, PopupContent } from 'semantic-ui-react';
-import { useEditorContext } from 'volto-slate/hooks';
+import { useEditorContext } from '@plone/volto-slate/hooks';
 import ErrorBoundary from './ErrorBoundary';
 
 export const MentionElement = ({

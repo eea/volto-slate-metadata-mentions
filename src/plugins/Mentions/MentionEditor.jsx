@@ -7,7 +7,7 @@ import { isEqual } from 'lodash';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactEditor } from 'slate-react';
-import { setPluginOptions } from 'volto-slate/actions';
+import { setPluginOptions } from '@plone/volto-slate/actions';
 import { MentionSchema } from './schema';
 import { getMentionWidget } from './utils';
 
