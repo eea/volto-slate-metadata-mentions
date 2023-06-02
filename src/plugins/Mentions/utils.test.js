@@ -10,7 +10,7 @@ jest.mock('slate', () => ({
   },
 }));
 
-describe('getMentionWidget function', () => {
+describe('getMentionWidget', () => {
   it('returns correct widget for each type', () => {
     expect(getMentionWidget('subjects')).toEqual('tags');
     expect(getMentionWidget('testId', { factory: 'Choice' })).toEqual(
