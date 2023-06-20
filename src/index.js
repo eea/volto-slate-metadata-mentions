@@ -1,5 +1,4 @@
 import installPlugins from './plugins';
-import installWidgetsView from '@eeacms/volto-widgets-view';
 
 const applyConfig = (config) => {
   // Restrict slate metadata mentions to Layout only
