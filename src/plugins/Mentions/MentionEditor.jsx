@@ -1,4 +1,3 @@
-// import { useFormStateContext } from '@plone/volto/components/manage/Form/FormContext';
 import { Icon as VoltoIcon, InlineForm } from '@plone/volto/components';
 import briefcaseSVG from '@plone/volto/icons/briefcase.svg';
 import checkSVG from '@plone/volto/icons/check.svg';
