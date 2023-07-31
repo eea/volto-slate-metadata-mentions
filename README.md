@@ -15,40 +15,34 @@
 [![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions-develop)
 
 
-[Volto Slate](https://6.dev-docs.plone.org/volto/configuration/volto-slate/) Metadata Mentions
+[Volto](https://github.com/plone/volto) add-on
 
 ## Features
 
-### Dynamically insert any Document metadata within your slate text blocks
-
-![Insert metadata](https://github.com/eea/volto-slate-metadata-mentions/raw/docs/docs/description.gif)
-
-### Combine multiple metadata in one slate text block
-
-![Combine multiple metadata](https://github.com/eea/volto-slate-metadata-mentions/raw/docs/docs/multiple.gif)
-
-### Apply styles
-
-![Style metadata entries](https://github.com/eea/volto-slate-metadata-mentions/raw/docs/docs/style.gif)
-
-### Preview metadata
-
-![Preview metadata](https://github.com/eea/volto-slate-metadata-mentions/raw/docs/docs/preview.gif)
-
-### Easily locate and edit metadata within the right sidebar
-
-![Edit](https://github.com/eea/volto-slate-metadata-mentions/raw/docs/docs/edit.gif)
-
-## Upgrade
-   
-### Upgrading to 6.x
-   
-This version requires: `@plone/volto >= 16.0.0.alpha.15` (`volto-slate` part of Volto Core).
-
+Demo GIF
 
 ## Getting started
 
-1. If you already have a volto project, just update `package.json`:
+### Try volto-slate-metadata-mentions with Docker
+
+      git clone https://github.com/eea/volto-slate-metadata-mentions.git
+      cd volto-slate-metadata-mentions
+      make
+      make start
+
+Go to http://localhost:3000
+
+### Add volto-slate-metadata-mentions to your Volto project
+
+1. Make sure you have a [Plone backend](https://plone.org/download) up-and-running at http://localhost:8080/Plone
+
+   ```Bash
+   docker compose up backend
+   ```
+
+1. Start Volto frontend
+
+* If you already have a volto project, just update `package.json`:
 
    ```JSON
    "addons": [
@@ -60,7 +54,7 @@ This version requires: `@plone/volto >= 16.0.0.alpha.15` (`volto-slate` part of 
    }
    ```
 
-1. If not, create one:
+* If not, create one:
 
    ```
    npm install -g yo @plone/generator-volto
@@ -71,8 +65,8 @@ This version requires: `@plone/volto >= 16.0.0.alpha.15` (`volto-slate` part of 
 1. Install new add-ons and restart Volto:
 
    ```
-   $ yarn
-   $ yarn start
+   yarn
+   yarn start
    ```
 
 1. Go to http://localhost:3000
@@ -86,10 +80,6 @@ See [RELEASE.md](https://github.com/eea/volto-slate-metadata-mentions/blob/maste
 ## How to contribute
 
 See [DEVELOP.md](https://github.com/eea/volto-slate-metadata-mentions/blob/master/DEVELOP.md).
-
-## See also
-
-- [volto-metadata-block](https://github.com/eea/volto-metadata-block)
 
 ## Copyright and license
 
