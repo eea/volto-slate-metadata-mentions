@@ -11,4 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#: plugins/Mentions/index
+# defaultMessage: Edit metadata
+msgid "Edit metadata"
+msgstr ""
 
+#: plugins/Mentions/index
+# defaultMessage: Remove metadata
+msgid "Remove metadata"
+msgstr ""
