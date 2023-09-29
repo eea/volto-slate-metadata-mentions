@@ -16,11 +16,13 @@
 
 1. Go to http://localhost:3000
 
-1.  Happy hacking!
+1. Initialize git hooks
 
     ```Bash
-    cd src/addons/volto-slate-metadata-mentions/
+    yarn prepare
     ```
+
+1. Happy hacking!
 
 ### Or add @eeacms/volto-slate-metadata-mentions to your Volto project
 
@@ -32,9 +34,7 @@ Before starting make sure your development environment is properly set. See [Vol
 
 1.  Create new volto app
 
-        yo @plone/volto my-volto-project --skip-install \
-                --workspace src/addons/volto-slate-metadata-mentions \
-                --addon @eeacms/volto-slate-metadata-mentions
+        yo @plone/volto my-volto-project --addon @eeacms/volto-slate-metadata-mentions --skip-install
         cd my-volto-project
 
 1.  Add the following to `mrs.developer.json`:
@@ -50,17 +50,14 @@ Before starting make sure your development environment is properly set. See [Vol
 
 1.  Install
 
-        yarn develop
+        make develop
         yarn
 
 1.  Start backend
 
-        docker pull plone
-        docker run -d --name plone -p 8080:8080 -e SITE=Plone -e PROFILES="profile-plone.restapi:blocks" plone
+        docker run --pull always -it --rm --name plone -p 8080:8080 -e SITE=Plone plone/plone-backend
 
     ...wait for backend to setup and start - `Ready to handle requests`:
-
-        docker logs -f plone
 
     ...you can also check http://localhost:8080/Plone
 
