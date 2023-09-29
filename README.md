@@ -45,10 +45,33 @@
    
 This version requires: `@plone/volto >= 16.0.0.alpha.15` (`volto-slate` part of Volto Core).
 
+## See also
+
+* [volto-metadata-block](https://github.com/eea/volto-metadata-block)
+
 
 ## Getting started
 
-1. If you already have a volto project, just update `package.json`:
+### Try volto-slate-metadata-mentions with Docker
+
+      git clone https://github.com/eea/volto-slate-metadata-mentions.git
+      cd volto-slate-metadata-mentions
+      make
+      make start
+
+Go to http://localhost:3000
+
+### Add volto-slate-metadata-mentions to your Volto project
+
+1. Make sure you have a [Plone backend](https://plone.org/download) up-and-running at http://localhost:8080/Plone
+
+   ```Bash
+   docker compose up backend
+   ```
+
+1. Start Volto frontend
+
+* If you already have a volto project, just update `package.json`:
 
    ```JSON
    "addons": [
@@ -60,7 +83,7 @@ This version requires: `@plone/volto >= 16.0.0.alpha.15` (`volto-slate` part of 
    }
    ```
 
-1. If not, create one:
+* If not, create one:
 
    ```
    npm install -g yo @plone/generator-volto
@@ -71,8 +94,8 @@ This version requires: `@plone/volto >= 16.0.0.alpha.15` (`volto-slate` part of 
 1. Install new add-ons and restart Volto:
 
    ```
-   $ yarn
-   $ yarn start
+   yarn
+   yarn start
    ```
 
 1. Go to http://localhost:3000
@@ -86,10 +109,6 @@ See [RELEASE.md](https://github.com/eea/volto-slate-metadata-mentions/blob/maste
 ## How to contribute
 
 See [DEVELOP.md](https://github.com/eea/volto-slate-metadata-mentions/blob/master/DEVELOP.md).
-
-## See also
-
-- [volto-metadata-block](https://github.com/eea/volto-metadata-block)
 
 ## Copyright and license
 
