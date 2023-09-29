@@ -45,6 +45,11 @@
    
 This version requires: `@plone/volto >= 16.0.0.alpha.15` (`volto-slate` part of Volto Core).
 
+## See also
+
+* [volto-metadata-block](https://github.com/eea/volto-metadata-block)
+
+
 ## Getting started
 
 ### Try volto-slate-metadata-mentions with Docker
@@ -104,10 +109,6 @@ See [RELEASE.md](https://github.com/eea/volto-slate-metadata-mentions/blob/maste
 ## How to contribute
 
 See [DEVELOP.md](https://github.com/eea/volto-slate-metadata-mentions/blob/master/DEVELOP.md).
-
-## See also
-
-- [volto-metadata-block](https://github.com/eea/volto-metadata-block)
 
 ## Copyright and license
 
