@@ -21,23 +21,23 @@
 
 ### Dynamically insert any Document metadata within your slate text blocks
 
-![Insert metadata](https://github.com/eea/volto-slate-metadata-mentions/raw/docs/docs/description.gif)
+![Insert metadata](https://raw.githubusercontent.com/eea/volto-slate-metadata-mentions/docs/docs/description.gif)
 
 ### Combine multiple metadata in one slate text block
 
-![Combine multiple metadata](https://github.com/eea/volto-slate-metadata-mentions/raw/docs/docs/multiple.gif)
+![Combine multiple metadata](https://raw.githubusercontent.com/eea/volto-slate-metadata-mentions/docs/docs/multiple.gif)
 
 ### Apply styles
 
-![Style metadata entries](https://github.com/eea/volto-slate-metadata-mentions/raw/docs/docs/style.gif)
+![Style metadata entries](https://raw.githubusercontent.com/eea/volto-slate-metadata-mentions/docs/docs/style.gif)
 
 ### Preview metadata
 
-![Preview metadata](https://github.com/eea/volto-slate-metadata-mentions/raw/docs/docs/preview.gif)
+![Preview metadata](https://raw.githubusercontent.com/eea/volto-slate-metadata-mentions/docs/docs/preview.gif)
 
 ### Easily locate and edit metadata within the right sidebar
 
-![Edit](https://github.com/eea/volto-slate-metadata-mentions/raw/docs/docs/edit.gif)
+![Edit](https://raw.githubusercontent.com/eea/volto-slate-metadata-mentions/docs/docs/edit.gif)
 
 ## Upgrade
    
