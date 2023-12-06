@@ -12,23 +12,29 @@ describe('Block Tests: Metadata', () => {
     cy.setSlateSelection('Colorless', 'green');
     cy.clickSlateButton('Metadata');
 
-    cy.get('.sidebar-container div[id="field-metadata"]')
-      .type('Publishing Date{enter}');
+    cy.get('.sidebar-container div[id="field-metadata"]').type(
+      'Publishing Date{enter}',
+    );
     cy.get('.sidebar-container .form .header button:first-of-type').click();
 
     // Remove link
-    cy.setSlateSelection('Colorless')
-      .setSlateSelection('green');
+    cy.setSlateSelection('Colorless').setSlateSelection('green');
     cy.clickSlateButton('Remove metadata');
 
     // Re-add link
+    cy.get('.content-area .slate-editor [contenteditable=true]')
+      .focus()
+      .click()
+      .wait(1000);
     cy.setSlateSelection('green', 'sleep');
     cy.clickSlateButton('Metadata');
 
-    cy.get('.sidebar-container div[id="field-metadata"]')
-      .type('Summary{enter}');
-    cy.get('.sidebar-container [id="blockform-fieldset-metadata"] [id="field-description"]')
-      .type('blue cats sleep');
+    cy.get('.sidebar-container div[id="field-metadata"]').type(
+      'Summary{enter}',
+    );
+    cy.get(
+      '.sidebar-container [id="blockform-fieldset-metadata"] [id="field-description"]',
+    ).type('blue cats sleep');
     cy.get('.sidebar-container .form .header button:first-of-type').click();
 
     // Save
