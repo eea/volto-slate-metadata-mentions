@@ -22,10 +22,7 @@ describe('Block Tests: Metadata', () => {
     cy.clickSlateButton('Remove metadata');
 
     // Re-add link
-    cy.get('.content-area .slate-editor [contenteditable=true]')
-      .focus()
-      .click()
-      .wait(1000);
+    cy.wait(1000);
     cy.setSlateSelection('green', 'sleep');
     cy.clickSlateButton('Metadata');
 
