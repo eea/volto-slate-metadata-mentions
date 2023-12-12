@@ -9,47 +9,35 @@ describe('Block Tests: Metadata', () => {
       .focus()
       .click()
       .wait(1000)
-      .type('Colorless green ideas sleep furiously.')
-      .setSelection('furiously');
+      .type('Colorless green ideas sleep furiously.{selectall}');
 
     cy.clickSlateButton('Metadata');
-
-    cy.toolbarSave();
     cy.contains('Colorless green ideas sleep furiously.');
 
-    // Complete chained commands
-    // cy.getSlateEditorAndType('Colorless green ideas sleep furiously.');
+    cy.get('.sidebar-container div[id="field-metadata"]').type(
+      'Publishing Date{enter}',
+    );
+    cy.get('.sidebar-container .form .header button:first-of-type').click();
 
-    // // Metadata mention
-    // cy.setSlateSelection('Colorless', 'green');
-    // cy.clickSlateButton('Metadata');
+    // Remove link
+    cy.get('.slate-editor [contenteditable=true]').type('{selectall}');
+    cy.clickSlateButton('Remove metadata');
 
-    // cy.get('.sidebar-container div[id="field-metadata"]').type(
-    //   'Publishing Date{enter}',
-    // );
-    // cy.get('.sidebar-container .form .header button:first-of-type').click();
+    cy.get('.slate-editor [contenteditable=true]').type('{selectall}');
+    cy.clickSlateButton('Metadata');
 
-    // // Remove link
-    // cy.setSlateSelection('Colorless').setSlateSelection('green');
-    // cy.clickSlateButton('Remove metadata');
+    cy.get('.sidebar-container div[id="field-metadata"]').type(
+      'Summary{enter}',
+    );
+    cy.get(
+      '.sidebar-container [id="blockform-fieldset-metadata"] [id="field-description"]',
+    ).type('Colorless blue cats sleep furiously.');
+    cy.get('.sidebar-container .form .header button:first-of-type').click();
 
-    // // Re-add link
-    // cy.wait(1000);
-    // cy.setSlateSelection('green', 'sleep');
-    // cy.clickSlateButton('Metadata');
+    // Save
+    cy.toolbarSave();
 
-    // cy.get('.sidebar-container div[id="field-metadata"]').type(
-    //   'Summary{enter}',
-    // );
-    // cy.get(
-    //   '.sidebar-container [id="blockform-fieldset-metadata"] [id="field-description"]',
-    // ).type('blue cats sleep');
-    // cy.get('.sidebar-container .form .header button:first-of-type').click();
-
-    // // Save
-    // cy.toolbarSave();
-
-    // // then the page view should contain a link
-    // cy.contains('Colorless blue cats sleep furiously.');
+    // then the page view should contain a link
+    cy.contains('Colorless blue cats sleep furiously.');
   });
 });
