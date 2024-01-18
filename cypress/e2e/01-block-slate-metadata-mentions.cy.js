@@ -6,29 +6,35 @@ describe('Block Tests: Metadata', () => {
 
   it('As editor I can add metadata mentions', function () {
     // Complete chained commands
-    cy.getSlateEditorAndType('Colorless green ideas sleep furiously.');
+    cy.getSlateEditorAndType('Colorless green ideas sleep furiously.')
+      .type('{selectAll}')
+      .dblclick();
 
     // Metadata mention
+    cy.setSlateCursor('Colorless').dblclick();
     cy.setSlateSelection('Colorless', 'green');
     cy.clickSlateButton('Metadata');
 
-    cy.get('.sidebar-container div[id="field-metadata"]')
-      .type('Publishing Date{enter}');
+    cy.get('.sidebar-container div[id="field-metadata"]').type(
+      'Publishing Date{enter}',
+    );
     cy.get('.sidebar-container .form .header button:first-of-type').click();
 
     // Remove link
-    cy.setSlateSelection('Colorless')
-      .setSlateSelection('green');
+    cy.setSlateSelection('Colorless').setSlateSelection('green');
     cy.clickSlateButton('Remove metadata');
 
     // Re-add link
+    cy.setSlateCursor('Colorless').dblclick();
     cy.setSlateSelection('green', 'sleep');
     cy.clickSlateButton('Metadata');
 
-    cy.get('.sidebar-container div[id="field-metadata"]')
-      .type('Summary{enter}');
-    cy.get('.sidebar-container [id="blockform-fieldset-metadata"] [id="field-description"]')
-      .type('blue cats sleep');
+    cy.get('.sidebar-container div[id="field-metadata"]').type(
+      'Summary{enter}',
+    );
+    cy.get(
+      '.sidebar-container [id="blockform-fieldset-metadata"] [id="field-description"]',
+    ).type('blue cats sleep');
     cy.get('.sidebar-container .form .header button:first-of-type').click();
 
     // Save
