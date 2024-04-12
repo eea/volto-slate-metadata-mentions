@@ -40,6 +40,7 @@ const btnFactory = (options) => (props) => (
   <ToolbarButton {...props} {...options} title="Metadata" />
 );
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (config) => {
   const opts = {
     title: 'Metadata',
