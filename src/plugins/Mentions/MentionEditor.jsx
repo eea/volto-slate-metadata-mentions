@@ -141,8 +141,7 @@ const MentionEditor = (props) => {
   );
 
   React.useEffect(() => {
-    const metaId = id;
-    updateSchema(metaId);
+    updateSchema(id);
   }, [updateSchema, id]);
 
   const onChangeValues = React.useCallback(

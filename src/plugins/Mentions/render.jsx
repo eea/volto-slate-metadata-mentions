@@ -33,7 +33,7 @@ export const MentionElement = ({
 
   const intl = useIntl();
 
-  // Get data from the editor, if it exists. The editor has up to date block
+  // Get data from the editor, if it exists. The editor has up-to-date block
   // props
   const editor = useEditorContext();
 
@@ -45,7 +45,7 @@ export const MentionElement = ({
   let Widget = views.getWidget(data);
   let className = 'metadata mention ' + id;
 
-  // If edit mode and output is empty render it's id
+  // If edit mode and output is empty render its id
   if (editor && !output) {
     className += ' empty';
     output = id;
@@ -66,7 +66,7 @@ export const MentionElement = ({
             condition={data.addLinkToDownload}
           >
             <Widget value={output} className={className}>
-              {(child) => wrapInlineMarkupText(children, (c) => child)}
+              {(child) => wrapInlineMarkupText(children, (_c) => child)}
             </Widget>
           </ConditionalLink>
         </ErrorBoundary>
