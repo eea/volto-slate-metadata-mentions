@@ -10,8 +10,16 @@ import { setPluginOptions } from '@plone/volto-slate/actions';
 import { MentionSchema } from './schema';
 import { getMentionWidget } from './utils';
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (props) => {
+import { defineMessages, useIntl } from 'react-intl';
+
+const messages = defineMessages({
+  metadataValue: {
+    id: 'Metadata value',
+    defaultMessage: 'Metadata value',
+  },
+});
+
+const MentionEditor = (props) => {
   const {
     editor,
     pluginId,
@@ -27,6 +35,8 @@ export default (props) => {
     (state) => state?.schema?.schema?.properties || {},
   );
 
+  const intl = useIntl();
+
   const pid = `${editor.uid}-${pluginId}`;
 
   // Get formData
@@ -39,12 +49,14 @@ export default (props) => {
 
   const dispatch = useDispatch();
   const [formData, setFormData] = React.useState({});
-  const [editSchema, setEditSchema] = React.useState(MentionSchema);
 
   const active = getActiveElement(editor);
   const [elementNode] = active;
   const isElement = isActiveElement(editor);
   const id = elementNode?.data?.metadata || elementNode?.data?.id;
+  const [editSchema, setEditSchema] = React.useState(
+    MentionSchema({ metadata: id, intl }),
+  );
 
   // Update the form data based on the current footnote
   const elRef = React.useRef(null);
@@ -72,6 +84,7 @@ export default (props) => {
         insertElement(editor, {
           metadata: formData?.metadata,
           widget: formData?.widget,
+          ...formData,
         });
 
         // Update document metadata
@@ -97,20 +110,22 @@ export default (props) => {
       const extendedFields = metaId ? [metaId] : [];
       const extendedProperties = metaId ? { [metaId]: properties[metaId] } : {};
 
+      const baseSchema = MentionSchema({ metadata: metaId, intl });
+
       setEditSchema({
-        ...MentionSchema,
+        ...baseSchema,
         fieldsets: [
-          ...MentionSchema.fieldsets,
+          ...baseSchema.fieldsets,
           {
             id: 'metadata',
-            title: 'Metadata value',
+            title: intl.formatMessage(messages.metadataValue),
             fields: extendedFields,
           },
         ],
         properties: {
-          ...MentionSchema.properties,
+          ...baseSchema.properties,
           metadata: {
-            ...MentionSchema.properties.metadata,
+            ...baseSchema.properties.metadata,
             choices: Object.keys(properties)
               .map((key) => {
                 const val = properties[key];
@@ -122,7 +137,7 @@ export default (props) => {
         },
       });
     },
-    [properties],
+    [properties, intl],
   );
 
   React.useEffect(() => {
@@ -194,3 +209,5 @@ export default (props) => {
     />
   );
 };
+
+export default MentionEditor;
