@@ -10,8 +10,7 @@ import { setPluginOptions } from '@plone/volto-slate/actions';
 import { MentionSchema } from './schema';
 import { getMentionWidget } from './utils';
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (props) => {
+const MentionEditor = (props) => {
   const {
     editor,
     pluginId,
@@ -194,3 +193,5 @@ export default (props) => {
     />
   );
 };
+
+export default MentionEditor;
