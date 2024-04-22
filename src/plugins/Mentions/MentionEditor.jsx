@@ -10,7 +10,7 @@ import { setPluginOptions } from '@plone/volto-slate/actions';
 import { MentionSchema } from './schema';
 import { getMentionWidget } from './utils';
 
-export default (props) => {
+const MentionEditor = (props) => {
   const {
     editor,
     pluginId,
@@ -193,3 +193,5 @@ export default (props) => {
     />
   );
 };
+
+export default MentionEditor;

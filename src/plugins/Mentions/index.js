@@ -40,7 +40,7 @@ const btnFactory = (options) => (props) => (
   <ToolbarButton {...props} {...options} title="Metadata" />
 );
 
-export default (config) => {
+const createMentionsPlugin = (config) => {
   const opts = {
     title: 'Metadata',
     pluginId: MENTION,
@@ -54,9 +54,8 @@ export default (config) => {
     toolbarButtonIcon: mentionsSVG,
     messages,
   };
-  const [installMentionsEditor, , , pluginOptions] = makeInlineElementPlugin(
-    opts,
-  );
+  const [installMentionsEditor, , , pluginOptions] =
+    makeInlineElementPlugin(opts);
   config = installMentionsEditor(config);
 
   const { slate } = config.settings;
@@ -71,3 +70,5 @@ export default (config) => {
 
   return config;
 };
+
+export default createMentionsPlugin;
