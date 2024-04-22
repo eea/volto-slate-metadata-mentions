@@ -63,7 +63,7 @@ export const MentionElement = ({
             to={`${flattenToAppURL(metadata['@id'])}/@@download/image/${
               metadata.id
             }`}
-            condition={data.addLinkToDownload}
+            condition={data.addLinkToDownload !== false}
           >
             <Widget value={output} className={className}>
               {(child) => wrapInlineMarkupText(children, (_c) => child)}
