@@ -40,7 +40,7 @@ const btnFactory = (options) => (props) => (
   <ToolbarButton {...props} {...options} title="Metadata" />
 );
 
-const createMentionsPlugin = (config) => {
+const applyConfig = (config) => {
   const opts = {
     title: 'Metadata',
     pluginId: MENTION,
@@ -71,4 +71,4 @@ const createMentionsPlugin = (config) => {
   return config;
 };
 
-export default createMentionsPlugin;
+export default applyConfig;
