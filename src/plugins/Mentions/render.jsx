@@ -6,6 +6,18 @@ import { Popup, PopupContent } from 'semantic-ui-react';
 import { useEditorContext } from '@plone/volto-slate/hooks';
 import ErrorBoundary from './ErrorBoundary';
 
+import { ConditionalLink } from '@plone/volto/components';
+
+import { flattenToAppURL } from '@plone/volto/helpers';
+import { defineMessages, useIntl } from 'react-intl';
+
+const messages = defineMessages({
+  downloadImage: {
+    id: 'Download image {title}',
+    defaultMessage: 'Download image {title}',
+  },
+});
+
 export const MentionElement = ({
   attributes,
   children,
@@ -19,7 +31,9 @@ export const MentionElement = ({
   let metadata = { ...(extras?.metadata || initialFormData) };
   const id = data?.metadata || data?.id;
 
-  // Get data from the editor, if it exists. The editor has up to date block
+  const intl = useIntl();
+
+  // Get data from the editor, if it exists. The editor has up-to-date block
   // props
   const editor = useEditorContext();
 
@@ -27,12 +41,11 @@ export const MentionElement = ({
     const blockProps = editor.getBlockProps();
     metadata = blockProps.metadata || blockProps.properties || {};
   }
-
   let output = metadata[id];
   let Widget = views.getWidget(data);
   let className = 'metadata mention ' + id;
 
-  // If edit mode and output is empty render it's id
+  // If edit mode and output is empty render its id
   if (editor && !output) {
     className += ' empty';
     output = id;
@@ -43,9 +56,19 @@ export const MentionElement = ({
     <>
       {mode === 'view' ? (
         <ErrorBoundary name={id}>
-          <Widget value={output} className={className}>
-            {(child) => wrapInlineMarkupText(children, (c) => child)}
-          </Widget>
+          <ConditionalLink
+            aria-label={intl.formatMessage(messages.downloadImage, {
+              title: metadata.title,
+            })}
+            to={`${flattenToAppURL(metadata['@id'])}/@@download/image/${
+              metadata.id
+            }`}
+            condition={data.addLinkToDownload !== false}
+          >
+            <Widget value={output} className={className}>
+              {(child) => wrapInlineMarkupText(children, (_c) => child)}
+            </Widget>
+          </ConditionalLink>
         </ErrorBoundary>
       ) : (
         <Popup
