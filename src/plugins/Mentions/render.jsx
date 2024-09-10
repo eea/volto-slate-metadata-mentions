@@ -42,7 +42,7 @@ export const MentionElement = ({
     metadata = blockProps.metadata || blockProps.properties || {};
   }
   let output = metadata[id];
-  let Widget = views.getWidget(data);
+  let Widget = data?.displayDate ? views.widget.date : views.getWidget(data);
   let className = 'metadata mention ' + id;
 
   // If edit mode and output is empty render its id
@@ -51,7 +51,6 @@ export const MentionElement = ({
     output = id;
     Widget = views.getWidget({ widget: 'default' });
   }
-
   return (
     <>
       {mode === 'view' ? (

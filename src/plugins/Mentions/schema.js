@@ -21,6 +21,14 @@ const messages = defineMessages({
     id: 'Display',
     defaultMessage: 'Display',
   },
+  displayDate: {
+    id: 'Show only date',
+    defaultMessage: 'Show only date',
+  },
+  displayDateDescription: {
+    id: 'Display only date without time',
+    defaultMessage: 'Display only date without time',
+  },
   addLinkToDownload: {
     id: 'Add link to download',
     defaultMessage: 'Add link to download',
@@ -42,6 +50,7 @@ export const MentionSchema = function ({ metadata, intl }) {
           'metadata',
           'widget',
           ...(metadata === 'image' ? ['addLinkToDownload'] : []),
+          ...(metadata === 'effective' ? ['displayDate'] : []),
         ],
       },
     ],
@@ -65,6 +74,15 @@ export const MentionSchema = function ({ metadata, intl }) {
               description: intl.formatMessage(
                 messages.addLinkToDownloadDescription,
               ),
+              type: 'boolean',
+            },
+          }
+        : {}),
+      ...(metadata === 'effective'
+        ? {
+            displayDate: {
+              title: intl.formatMessage(messages.displayDate),
+              description: intl.formatMessage(messages.displayDateDescription),
               type: 'boolean',
             },
           }
