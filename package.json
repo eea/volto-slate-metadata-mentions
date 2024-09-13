@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-slate-metadata-mentions",
-  "version": "8.1.1",
+  "version": "8.1.2",
   "description": "Volto Slate Metadata Mentions Plugin",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
