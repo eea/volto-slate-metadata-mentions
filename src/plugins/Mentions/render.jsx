@@ -42,6 +42,14 @@ export const MentionElement = ({
     metadata = blockProps.metadata || blockProps.properties || {};
   }
   let output = metadata[id];
+
+  if (id === 'creators') {
+    output = metadata['creators_fullname'];
+  }
+  if (id === 'contributors') {
+    output = metadata['contributors_fullname'];
+  }
+
   let Widget = data?.dateOnly ? views.widget.date : views.getWidget(data);
   let className = 'metadata mention ' + id;
 
