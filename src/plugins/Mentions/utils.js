@@ -20,7 +20,7 @@ export const getMentionWidget = (id, schema) => {
   if (schema?.factory === 'File') {
     return 'file';
   }
-  return schema?.widget || schema?.type || id;
+  return id || schema?.widget || schema?.type;
 };
 
 export function isCursorInMention(editor) {

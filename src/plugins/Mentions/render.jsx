@@ -42,8 +42,13 @@ export const MentionElement = ({
     metadata = blockProps.metadata || blockProps.properties || {};
   }
   let output = metadata[id];
-  let Widget = data?.dateOnly ? views.widget.date : views.getWidget(data);
+  const widgetType = { id: data?.metadata, widget: data?.widget } || {};
+  let Widget = data?.dateOnly ? views.widget.date : views.getWidget(widgetType);
+
   let className = 'metadata mention ' + id;
+  // console.log('here Widget in slate mentions', Widget);
+  // console.log('here getWidget', views.getWidget);
+  console.log('here data in mention', data);
 
   // If edit mode and output is empty render its id
   if (editor && !output) {
@@ -64,7 +69,7 @@ export const MentionElement = ({
             }`}
             condition={!!data.addLinkToDownload}
           >
-            <Widget value={output} className={className}>
+            <Widget value={output} content={metadata} className={className}>
               {(child) => wrapInlineMarkupText(children, (_c) => child)}
             </Widget>
           </ConditionalLink>
@@ -81,7 +86,7 @@ export const MentionElement = ({
         >
           <PopupContent>
             <ErrorBoundary name={id}>
-              <Widget value={output} className={className} />
+              <Widget value={output} content={metadata} className={className} />
             </ErrorBoundary>
           </PopupContent>
         </Popup>
