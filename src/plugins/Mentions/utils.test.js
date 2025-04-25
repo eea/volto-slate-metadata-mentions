@@ -12,7 +12,7 @@ jest.mock('slate', () => ({
 
 jest.mock('@plone/volto/registry', () => ({
   __esModule: true,
-  config: {
+  default: {
     widgets: {
       views: {
         id: {
