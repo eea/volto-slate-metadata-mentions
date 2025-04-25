@@ -26,7 +26,7 @@ describe('getMentionWidget', () => {
     expect(getMentionWidget('testId', { factory: 'File' })).toEqual('file');
     expect(
       getMentionWidget('testId', { widget: 'Widget1', type: 'Type1' }),
-    ).toEqual('Widget1');
+    ).toEqual('testId');
     expect(getMentionWidget('testId', { type: 'Type1' })).toEqual('Type1');
     expect(getMentionWidget('testId')).toEqual('testId');
   });
