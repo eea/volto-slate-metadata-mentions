@@ -64,7 +64,7 @@ export const MentionElement = ({
             }`}
             condition={!!data.addLinkToDownload}
           >
-            <Widget value={output} className={className}>
+            <Widget value={output} content={metadata} className={className}>
               {(child) => wrapInlineMarkupText(children, (_c) => child)}
             </Widget>
           </ConditionalLink>
