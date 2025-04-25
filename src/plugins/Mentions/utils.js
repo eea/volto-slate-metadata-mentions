@@ -3,7 +3,8 @@ import { MENTION } from './constants';
 import config from '@plone/volto/registry';
 
 export const getMentionWidget = (id, schema) => {
-  const { views } = config.widgets;
+  const views = config.widgets?.views || {};
+
   if (views.id?.[id]) {
     return id;
   }
