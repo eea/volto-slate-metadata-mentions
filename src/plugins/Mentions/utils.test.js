@@ -28,7 +28,7 @@ jest.mock('@plone/volto/registry', () => ({
 
 describe('getMentionWidget', () => {
   it('returns correct widget for each type', () => {
-    expect(getMentionWidget('subjects')).toEqual('subjects');
+    expect(getMentionWidget('subjects')).toEqual('tags');
     expect(getMentionWidget('testId', { factory: 'Choice' })).toEqual(
       'choices',
     );
