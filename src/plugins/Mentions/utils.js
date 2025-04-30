@@ -4,13 +4,10 @@ import config from '@plone/volto/registry';
 
 export const getMentionWidget = (id, schema) => {
   const views = config.widgets?.views || {};
-
-  if (views.id?.[id]) {
-    return id;
-  }
   if (views.widget?.[id]) {
     return id;
   }
+  if (id === 'subjects') return 'tags';
   if (schema?.factory === 'Choice') return 'choices';
   if (schema?.factory === 'Relation Choice') return 'relation';
   if (schema?.factory === 'Relation List') return 'relations';
