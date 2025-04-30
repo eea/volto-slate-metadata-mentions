@@ -1,25 +1,22 @@
 import { Editor, Range } from 'slate'; // Range,
 import { MENTION } from './constants';
+import config from '@plone/volto/registry';
 
 export const getMentionWidget = (id, schema) => {
-  if (id === 'subjects') {
-    return 'tags';
+  const views = config.widgets?.views || {};
+
+  if (views.id?.[id]) {
+    return id;
   }
-  if (schema?.factory === 'Choice') {
-    return 'choices';
+  if (views.widget?.[id]) {
+    return id;
   }
-  if (schema?.factory === 'Relation Choice') {
-    return 'relation';
-  }
-  if (schema?.factory === 'Relation List') {
-    return 'relations';
-  }
-  if (schema?.factory === 'Image') {
-    return 'image';
-  }
-  if (schema?.factory === 'File') {
-    return 'file';
-  }
+  if (schema?.factory === 'Choice') return 'choices';
+  if (schema?.factory === 'Relation Choice') return 'relation';
+  if (schema?.factory === 'Relation List') return 'relations';
+  if (schema?.factory === 'Image') return 'image';
+  if (schema?.factory === 'File') return 'file';
+
   return schema?.widget || schema?.type || id;
 };
 
