@@ -10,6 +10,22 @@ jest.mock('slate', () => ({
   },
 }));
 
+jest.mock('@plone/volto/registry', () => ({
+  __esModule: true,
+  default: {
+    widgets: {
+      views: {
+        id: {
+          subjects: () => <div>SubjectsWidget</div>,
+        },
+        widget: {
+          tags: () => <div>TagsWidget</div>,
+        },
+      },
+    },
+  },
+}));
+
 describe('getMentionWidget', () => {
   it('returns correct widget for each type', () => {
     expect(getMentionWidget('subjects')).toEqual('tags');
@@ -57,9 +73,10 @@ describe('isCursorInMention', () => {
   });
 
   it('returns true if selection collapsed inside a mention', () => {
-    Editor.above.mockReturnValueOnce([{}]);
+    const mentionNode = {};
+    Editor.above.mockReturnValueOnce([mentionNode]);
     Range.isCollapsed.mockReturnValueOnce(true);
-    expect(isCursorInMention(editor)).toEqual({});
+    expect(isCursorInMention(editor)).toEqual(mentionNode);
     expect(Editor.above).toHaveBeenCalledWith(editor, {
       match: expect.any(Function),
     });
