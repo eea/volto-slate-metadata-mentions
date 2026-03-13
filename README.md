@@ -79,13 +79,15 @@ Go to http://localhost:3000
 * If you already have a volto project, just update `package.json`:
 
    ```JSON
-   "addons": [
-       "@eeacms/volto-slate-metadata-mentions"
-   ],
-
    "dependencies": {
        "@eeacms/volto-slate-metadata-mentions": "*"
    }
+   ```
+
+   and `volto.config.js`:
+
+   ```JavaScript
+   const addons = ['@eeacms/volto-slate-metadata-mentions'];
    ```
 
 * If not, create one with Cookieplone, as recommended by the official Plone documentation for Volto 18+:
