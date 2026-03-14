@@ -60,4 +60,14 @@ describe('Block Tests: Metadata', () => {
 
     cy.contains('Colorless blue cats sleep furiously.');
   });
+
+  it('renders metadata mention node in editor', () => {
+    setMetadataMentionBlocks();
+    cy.navigate('/cypress/my-page/edit');
+    cy.waitForResourceToLoad('@schema');
+
+    cy.get('.block.slate').should('exist');
+    cy.get('#toolbar-save').click();
+    cy.url().should('include', '/cypress/my-page');
+  });
 });
