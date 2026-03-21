@@ -49,13 +49,21 @@ const setMetadataMentionBlocks = () =>
     },
   });
 
+const getVisibleSlateToolbarButton = (title) =>
+  cy
+    .get('.slate-inline-toolbar')
+    .filter(':visible')
+    .last()
+    .find(`.button-wrapper a[title="${title}"]`)
+    .last();
+
 const openMetadataPopup = () => {
-  cy.get('.slate-inline-toolbar .button-wrapper a[title="Metadata"]').trigger(
-    'mousedown',
-  );
-  cy.get('.slate-inline-toolbar .button-wrapper a[title="Edit metadata"]')
+  getVisibleSlateToolbarButton('Metadata').trigger('mousedown', {
+    force: true,
+  });
+  getVisibleSlateToolbarButton('Edit metadata')
     .should('exist')
-    .trigger('mousedown');
+    .trigger('mousedown', { force: true });
   cy.contains('h2', 'Metadata entry').should('exist');
 };
 
