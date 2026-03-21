@@ -318,6 +318,8 @@ Cypress.Commands.add(
 // --- waitForResourceToLoad ----------------------------------------------------------
 Cypress.Commands.add('waitForResourceToLoad', (fileName, type) => {
   const resourceCheckInterval = 40;
+  const maxChecks = 50;
+  const count = [0];
 
   return new Cypress.Promise((resolve) => {
     const checkIfResourceHasBeenLoaded = () => {
@@ -333,7 +335,18 @@ Cypress.Commands.add('waitForResourceToLoad', (fileName, type) => {
         return;
       }
 
-      setTimeout(checkIfResourceHasBeenLoaded, resourceCheckInterval);
+      count[0] += 1;
+      const tid = setTimeout(
+        checkIfResourceHasBeenLoaded,
+        resourceCheckInterval,
+      );
+
+      if (count[0] > maxChecks) {
+        clearTimeout(tid);
+        throw new Error(
+          `Timeout resolving resource: ${fileName} (type ${type})`,
+        );
+      }
     };
 
     checkIfResourceHasBeenLoaded();

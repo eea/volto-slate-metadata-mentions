@@ -63,9 +63,9 @@ describe('Block Tests: Metadata', () => {
 
   it('renders metadata mention node in editor', () => {
     setMetadataMentionBlocks();
-    cy.navigate('/cypress/my-page/edit');
-    cy.waitForResourceToLoad('@schema');
+    cy.visit('/cypress/my-page/edit');
 
+    cy.get('.block.title h1').should('exist');
     cy.get('.block.slate').should('exist');
     cy.get('#toolbar-save').click();
     cy.url().should('include', '/cypress/my-page');
