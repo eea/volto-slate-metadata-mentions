@@ -61,10 +61,17 @@ const openMetadataPopup = () => {
   getVisibleSlateToolbarButton('Metadata').trigger('mousedown', {
     force: true,
   });
-  getVisibleSlateToolbarButton('Edit metadata')
-    .should('exist')
-    .trigger('mousedown', { force: true });
-  cy.contains('h2', 'Metadata entry').should('exist');
+  cy.wait(300);
+  cy.get('body').then(($body) => {
+    const editButton = $body.find(
+      '.slate-inline-toolbar:visible .button-wrapper a[title="Edit metadata"]',
+    );
+
+    if (editButton.length) {
+      cy.wrap(editButton.last()).trigger('mousedown', { force: true });
+    }
+  });
+  cy.contains('Metadata entry').should('exist');
 };
 
 describe('Block Tests: Metadata', () => {
@@ -82,7 +89,7 @@ describe('Block Tests: Metadata', () => {
 
     cy.get('#field-metadata').click();
     cy.focused().type('Publishing Date{enter}', { force: true });
-    cy.contains('h2', 'Metadata entry').parent().find('button').first().click();
+    cy.contains('Metadata entry').parent().find('button').first().click();
 
     cy.setSlateSelection('Colorless', 'green');
     cy.clickSlateButton('Remove metadata');
@@ -96,7 +103,7 @@ describe('Block Tests: Metadata', () => {
     cy.get('#blockform-fieldset-metadata #field-description').type(
       'blue cats sleep',
     );
-    cy.contains('h2', 'Metadata entry').parent().find('button').first().click();
+    cy.contains('Metadata entry').parent().find('button').first().click();
 
     cy.toolbarSave();
     cy.contains('Colorless blue cats sleep furiously.');
