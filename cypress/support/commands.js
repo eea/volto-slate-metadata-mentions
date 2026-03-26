@@ -397,20 +397,36 @@ Cypress.Commands.add('getSlateEditorAndType', (type) => {
     .type(type);
 });
 
+const withActiveSlateEditor = (cb) => {
+  return cy.get('body').then(($body) => {
+    const selectedEditor = $body.find(
+      '.slate-editor.selected [contenteditable=true]',
+    );
+
+    if (selectedEditor.length) {
+      return cb(cy.wrap(selectedEditor.last()));
+    }
+
+    return cb(
+      cy
+        .get('.content-area .slate-editor [contenteditable=true]')
+        .last()
+        .focus()
+        .click(),
+    );
+  });
+};
+
 Cypress.Commands.add('setSlateSelection', (subject, query, endQuery) => {
-  cy.get('.slate-editor.selected [contenteditable=true]')
-    .focus()
-    .click()
-    .setSelection(subject, query, endQuery)
-    .wait(1000);
+  return withActiveSlateEditor((editor) => {
+    return editor.setSelection(subject, query, endQuery).wait(1000);
+  });
 });
 
 Cypress.Commands.add('setSlateCursor', (subject, query, endQuery) => {
-  cy.get('.slate-editor.selected [contenteditable=true]')
-    .focus()
-    .click()
-    .setCursor(subject, query, endQuery)
-    .wait(1000);
+  return withActiveSlateEditor((editor) => {
+    return editor.setCursor(subject, query, endQuery).wait(1000);
+  });
 });
 
 Cypress.Commands.add('clickSlateButton', (button) => {
@@ -483,6 +499,20 @@ function setBaseAndExtent(...args) {
 
 Cypress.Commands.add('navigate', (route = '') => {
   return cy.window().its('appHistory').invoke('push', route);
+});
+
+Cypress.Commands.add('readContent', (path) => {
+  const normalizedPath = path.replace(/^\//, '');
+
+  return cy
+    .request({
+      method: 'GET',
+      url: `/++api++/${normalizedPath}`,
+      headers: {
+        Accept: 'application/json',
+      },
+    })
+    .its('body');
 });
 
 Cypress.Commands.add('store', () => {

@@ -5,6 +5,7 @@ import clearSVG from '@plone/volto/icons/clear.svg';
 import { isEqual } from 'lodash';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { setPluginOptions } from '@plone/volto-slate/actions';
 import { MentionSchema } from './schema';
@@ -39,19 +40,11 @@ const MentionEditor = (props) => {
 
   const pid = `${editor.uid}-${pluginId}`;
 
-  // Get formData
-  // const context = useFormStateContext();
-  // const { contextData, setContextData } = context;
-  // const metaData = contextData.formData;
-  const metaData = editor.getBlockProps
-    ? editor.getBlockProps().metadata || editor.getBlockProps().properties
-    : {};
-
   const dispatch = useDispatch();
   const [formData, setFormData] = React.useState({});
 
   const active = getActiveElement(editor);
-  const [elementNode] = active;
+  const [elementNode, elementPath] = active || [];
   const isElement = isActiveElement(editor);
   const id = elementNode?.data?.metadata || elementNode?.data?.id;
   const [editSchema, setEditSchema] = React.useState(
@@ -60,42 +53,68 @@ const MentionEditor = (props) => {
 
   // Update the form data based on the current footnote
   const elRef = React.useRef(null);
+  const elementPathRef = React.useRef(null);
 
-  if (isElement && !isEqual(elementNode, elRef.current)) {
-    elRef.current = elementNode;
-    const data = elementNode.data
-      ? {
-          ...elementNode.data,
-          [id]: metaData?.[id],
-        }
-      : {};
-    setFormData(data);
-  } else if (!isElement) {
-    elRef.current = null;
-  }
+  React.useEffect(() => {
+    if (isElement && elementNode && !isEqual(elementNode, elRef.current)) {
+      const currentMetadata = editor.getBlockProps
+        ? editor.getBlockProps().metadata || editor.getBlockProps().properties
+        : {};
+      elRef.current = elementNode;
+      elementPathRef.current = elementPath;
+      const data = elementNode.data
+        ? {
+            ...elementNode.data,
+            [id]: currentMetadata?.[id],
+          }
+        : {};
+      setFormData(data);
+    } else if (!isElement) {
+      elRef.current = null;
+      elementPathRef.current = null;
+    }
+  }, [editor, elementNode, elementPath, id, isElement]);
 
   const saveDataToEditor = React.useCallback(
-    (formData) => {
+    (nextFormData) => {
       const { onChangeField } = editor.getBlockProps
         ? editor.getBlockProps()
         : {}; // TODO: provide fake block props in volto-slate. onChangeField is onChange
-      if (hasValue(formData)) {
-        // hasValue(formData) = !!formData.footnote
-        insertElement(editor, {
-          metadata: formData?.metadata,
-          widget: formData?.widget,
-          ...formData,
-        });
+      if (hasValue(nextFormData)) {
+        const mentionData = {
+          metadata: nextFormData?.metadata,
+          widget: nextFormData?.widget,
+          ...nextFormData,
+        };
+        const mentionPath =
+          elementPathRef.current || getActiveElement(editor)?.[1];
+
+        if (mentionPath) {
+          Transforms.setNodes(
+            editor,
+            { data: mentionData },
+            { at: mentionPath },
+          );
+        } else {
+          insertElement(editor, mentionData);
+        }
 
         // Update document metadata
-        onChangeField &&
-          onChangeField(formData?.metadata, formData?.[formData?.metadata]);
+        if (onChangeField) {
+          setTimeout(() => {
+            onChangeField(
+              nextFormData?.metadata,
+              nextFormData?.[nextFormData?.metadata],
+            );
+          }, 0);
+        }
       } else {
         unwrapElement(editor);
       }
     },
     [
       editor,
+      getActiveElement,
       insertElement,
       unwrapElement,
       hasValue,
@@ -150,21 +169,21 @@ const MentionEditor = (props) => {
         ? editor.getBlockProps().metadata || editor.getBlockProps().properties
         : {};
       if (id === 'metadata') {
-        setFormData({
-          ...formData,
+        setFormData((currentFormData) => ({
+          ...currentFormData,
           [id]: value,
           widget: getMentionWidget(value, properties[value]),
           [value]: metaData?.[value],
-        });
+        }));
         updateSchema(value);
       } else {
-        setFormData({
-          ...formData,
+        setFormData((currentFormData) => ({
+          ...currentFormData,
           [id]: value,
-        });
+        }));
       }
     },
-    [editor, properties, updateSchema, formData],
+    [editor, properties, updateSchema],
   );
 
   const checkForCancel = () => {
@@ -181,6 +200,7 @@ const MentionEditor = (props) => {
       onChangeField={(id, value) => {
         onChangeValues(id, value);
       }}
+      onChangeFormData={setFormData}
       formData={formData}
       headerActions={
         <>
