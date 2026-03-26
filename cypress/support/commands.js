@@ -391,46 +391,48 @@ Cypress.Commands.add(
 Cypress.Commands.add('getSlateEditorAndType', (type) => {
   cy.get('.content-area .slate-editor [contenteditable=true]')
     .last()
-    .focus()
     .click()
-    .wait(1000)
+    .trigger('focus')
     .type(type);
+
+  if (!type.includes('{')) {
+    return cy
+      .get('.content-area .slate-editor [contenteditable=true]')
+      .last()
+      .should('contain', type);
+  }
+
+  return cy
+    .get('.content-area .slate-editor [contenteditable=true]')
+    .last();
 });
 
-const withActiveSlateEditor = (cb) => {
-  return cy.get('body').then(($body) => {
-    const selectedEditor = $body.find(
-      '.slate-editor.selected [contenteditable=true]',
-    );
-
-    if (selectedEditor.length) {
-      return cb(cy.wrap(selectedEditor.last()));
-    }
-
-    return cb(
-      cy
-        .get('.content-area .slate-editor [contenteditable=true]')
-        .last()
-        .focus()
-        .click(),
-    );
-  });
-};
-
-Cypress.Commands.add('setSlateSelection', (subject, query, endQuery) => {
-  return withActiveSlateEditor((editor) => {
-    return editor.setSelection(subject, query, endQuery).wait(1000);
-  });
-});
+Cypress.Commands.add(
+  'setSlateSelection',
+  (subject, query, endQuery, wait = 1000) => {
+    cy.get('.content-area .slate-editor [contenteditable=true]')
+      .last()
+      .focus()
+      .click()
+      .setSelection(subject, query, endQuery)
+      .wait(wait);
+  },
+);
 
 Cypress.Commands.add('setSlateCursor', (subject, query, endQuery) => {
-  return withActiveSlateEditor((editor) => {
-    return editor.setCursor(subject, query, endQuery).wait(1000);
-  });
+  return cy
+    .get('.content-area .slate-editor [contenteditable=true]')
+    .last()
+    .focus()
+    .click()
+    .setCursor(subject, query, endQuery)
+    .wait(1000);
 });
 
 Cypress.Commands.add('clickSlateButton', (button) => {
-  cy.get(`.slate-inline-toolbar .button-wrapper a[title="${button}"]`).click();
+  cy.get(`.slate-inline-toolbar .button-wrapper a[title="${button}"]`).click({
+    force: true,
+  });
 });
 
 Cypress.Commands.add('toolbarSave', () => {
@@ -498,7 +500,9 @@ function setBaseAndExtent(...args) {
 }
 
 Cypress.Commands.add('navigate', (route = '') => {
-  return cy.window().its('appHistory').invoke('push', route);
+  cy.intercept('GET', '**/*').as('navGetCall');
+  cy.window().its('appHistory').invoke('push', route);
+  cy.wait('@navGetCall');
 });
 
 Cypress.Commands.add('readContent', (path) => {

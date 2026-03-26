@@ -1,17 +1,8 @@
 export const CONTENT_PATH = 'cypress/my-page';
 
-export const getVisibleSlateToolbarButton = (title) =>
-  cy
-    .get('.slate-inline-toolbar')
-    .filter(':visible')
-    .last()
-    .find(`.button-wrapper a[title="${title}"]`)
-    .last();
-
 export const openMetadataPopup = () => {
-  getVisibleSlateToolbarButton('Metadata').trigger('mousedown', {
-    force: true,
-  });
+  cy.get('.slate-inline-toolbar:visible', { timeout: 10000 }).should('exist');
+  cy.clickSlateButton('Metadata');
   cy.wait(300);
   cy.get('body').then(($body) => {
     const editButton = $body.find(

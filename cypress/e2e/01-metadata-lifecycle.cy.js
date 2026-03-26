@@ -20,8 +20,15 @@ describe('Block Tests: Metadata lifecycle', () => {
       metadataLabel: 'Publishing Date',
     });
 
-    cy.setSlateSelection('Colorless', 'green');
+    // Click on the mention to select it and show context toolbar
+    cy.get('.slate-editor .metadata.mention.edit').first().click();
+    cy.wait(500);
+    cy.get('.slate-editor .metadata.mention.edit').first().dblclick();
     cy.clickSlateButton('Remove metadata');
+
+    // Re-focus the editor after removing mention
+    cy.get('.slate-editor.selected [contenteditable=true]').focus().click();
+    cy.wait(500);
 
     addMetadataMention({
       cursorText: 'Colorless',

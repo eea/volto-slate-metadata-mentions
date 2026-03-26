@@ -20,6 +20,23 @@ const messages = defineMessages({
   },
 });
 
+const getAllowedMentionKeys = ({ metadata, intl }) => {
+  const schema = MentionSchema({ metadata, intl });
+  return new Set(
+    [...Object.keys(schema.properties || {}), metadata].filter(Boolean),
+  );
+};
+
+const normalizeMentionData = ({ formData = {}, metadata, intl }) => {
+  const allowedKeys = getAllowedMentionKeys({ metadata, intl });
+
+  return Object.fromEntries(
+    Object.entries(formData).filter(
+      ([key, value]) => allowedKeys.has(key) && value !== undefined,
+    ),
+  );
+};
+
 const MentionEditor = (props) => {
   const {
     editor,
@@ -81,11 +98,11 @@ const MentionEditor = (props) => {
         ? editor.getBlockProps()
         : {}; // TODO: provide fake block props in volto-slate. onChangeField is onChange
       if (hasValue(nextFormData)) {
-        const mentionData = {
+        const mentionData = normalizeMentionData({
+          formData: nextFormData,
           metadata: nextFormData?.metadata,
-          widget: nextFormData?.widget,
-          ...nextFormData,
-        };
+          intl,
+        });
         const mentionPath =
           elementPathRef.current || getActiveElement(editor)?.[1];
 
@@ -118,6 +135,7 @@ const MentionEditor = (props) => {
       insertElement,
       unwrapElement,
       hasValue,
+      intl,
       // setContextData,
       // contextData,
       // metaData,
@@ -169,12 +187,18 @@ const MentionEditor = (props) => {
         ? editor.getBlockProps().metadata || editor.getBlockProps().properties
         : {};
       if (id === 'metadata') {
-        setFormData((currentFormData) => ({
-          ...currentFormData,
-          [id]: value,
-          widget: getMentionWidget(value, properties[value]),
-          [value]: metaData?.[value],
-        }));
+        setFormData((currentFormData) =>
+          normalizeMentionData({
+            formData: {
+              ...currentFormData,
+              [id]: value,
+              widget: getMentionWidget(value, properties[value]),
+              [value]: metaData?.[value],
+            },
+            metadata: value,
+            intl,
+          }),
+        );
         updateSchema(value);
       } else {
         setFormData((currentFormData) => ({
@@ -183,7 +207,7 @@ const MentionEditor = (props) => {
         }));
       }
     },
-    [editor, properties, updateSchema],
+    [editor, properties, updateSchema, intl],
   );
 
   const checkForCancel = () => {
