@@ -1,8 +1,8 @@
+import { MentionSchema } from './schema';
+
 jest.mock('react-intl', () => ({
   defineMessages: (messages) => messages,
 }));
-
-import { MentionSchema } from './schema';
 
 describe('MentionSchema', () => {
   const intl = {
