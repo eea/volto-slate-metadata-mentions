@@ -11,12 +11,67 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. Default: "Add link to download"
+#: plugins/Mentions/schema
+msgid "Add link to download"
+msgstr ""
+
+#. Default: "Default"
+#: plugins/Mentions/schema
+msgid "Default"
+msgstr ""
+
+#. Default: "Display"
+#: plugins/Mentions/schema
+msgid "Display"
+msgstr ""
+
+#. Default: "Display only date without time"
+#: plugins/Mentions/schema
+msgid "Display only date without time"
+msgstr ""
+
+#. Default: "Download image {title}"
+#: plugins/Mentions/render
+msgid "Download image {title}"
+msgstr ""
+
+#. Default: "Edit metadata"
 #: plugins/Mentions/index
-# defaultMessage: Edit metadata
 msgid "Edit metadata"
 msgstr ""
 
+#. Default: "Metadata"
+#: plugins/Mentions/schema
+msgid "Metadata"
+msgstr ""
+
+#. Default: "Metadata entry"
+#: plugins/Mentions/schema
+msgid "Metadata entry"
+msgstr ""
+
+#. Default: "Metadata value"
+#: plugins/Mentions/MentionEditor
+msgid "Metadata value"
+msgstr ""
+
+#. Default: "Remove metadata"
 #: plugins/Mentions/index
-# defaultMessage: Remove metadata
 msgid "Remove metadata"
+msgstr ""
+
+#. Default: "Select metadata to be used"
+#: plugins/Mentions/schema
+msgid "Select metadata to be used"
+msgstr ""
+
+#. Default: "Show only date"
+#: plugins/Mentions/schema
+msgid "Show only date"
+msgstr ""
+
+#. Default: "Wrap image in a link to download the original image"
+#: plugins/Mentions/schema
+msgid "Wrap image in a link to download the original image"
 msgstr ""
