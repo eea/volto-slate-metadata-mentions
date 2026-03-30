@@ -402,9 +402,7 @@ Cypress.Commands.add('getSlateEditorAndType', (type) => {
       .should('contain', type);
   }
 
-  return cy
-    .get('.content-area .slate-editor [contenteditable=true]')
-    .last();
+  return cy.get('.content-area .slate-editor [contenteditable=true]').last();
 });
 
 Cypress.Commands.add(
@@ -507,15 +505,22 @@ Cypress.Commands.add('navigate', (route = '') => {
 });
 
 Cypress.Commands.add('readContent', (path) => {
+  let api_url, auth;
+  api_url = Cypress.env('API_PATH') || 'http://localhost:8080/Plone';
+  auth = {
+    user: 'admin',
+    pass: 'admin',
+  };
   const normalizedPath = path.replace(/^\//, '');
 
   return cy
     .request({
       method: 'GET',
-      url: `/++api++/${normalizedPath}`,
+      url: `${api_url}/${normalizedPath}`,
       headers: {
         Accept: 'application/json',
       },
+      auth: auth,
     })
     .its('body');
 });
