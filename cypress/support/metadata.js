@@ -57,6 +57,10 @@ export const openDocumentInEditMode = () => {
   cy.navigate(`/${CONTENT_PATH}/edit`);
   cy.url().should('include', `/${CONTENT_PATH}/edit`);
   cy.get('.block.title h1').should('exist');
+  cy.get('.content-area .slate-editor [contenteditable=true]')
+    .last()
+    .click();
+  cy.get('.slate-editor.selected').should('exist');
 };
 
 export const getSlateBlock = (path = CONTENT_PATH) => {
