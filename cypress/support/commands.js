@@ -410,8 +410,7 @@ Cypress.Commands.add('getSlateEditorAndType', (type) => {
 Cypress.Commands.add(
   'setSlateSelection',
   (subject, query, endQuery, wait = 1000) => {
-    cy.get('.content-area .slate-editor [contenteditable=true]')
-      .last()
+    cy.get('.slate-editor.selected [contenteditable=true]')
       .focus()
       .click()
       .setSelection(subject, query, endQuery)
@@ -421,18 +420,22 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('setSlateCursor', (subject, query, endQuery) => {
   return cy
-    .get('.content-area .slate-editor [contenteditable=true]')
-    .last()
+    .get('.slate-editor.selected [contenteditable=true]')
     .focus()
     .click()
     .setCursor(subject, query, endQuery)
     .wait(1000);
 });
 
-Cypress.Commands.add('clickSlateButton', (button) => {
-  cy.get(`.slate-inline-toolbar .button-wrapper a[title="${button}"]`).click({
-    force: true,
-  });
+Cypress.Commands.add('clickSlateButton', (button, timeout = 8000) => {
+  cy.get('.slate-inline-toolbar', {
+    timeout,
+  }).should('be.visible');
+  cy.get(`.slate-inline-toolbar .button-wrapper a[title="${button}"]`, {
+    timeout,
+  })
+    .should('be.visible')
+    .click({ force: true });
 });
 
 Cypress.Commands.add('toolbarSave', () => {
@@ -500,9 +503,7 @@ function setBaseAndExtent(...args) {
 }
 
 Cypress.Commands.add('navigate', (route = '') => {
-  cy.intercept('GET', '**/*').as('navGetCall');
-  cy.window().its('appHistory').invoke('push', route);
-  cy.wait('@navGetCall');
+  return cy.window().its('appHistory').invoke('push', route);
 });
 
 Cypress.Commands.add('readContent', (path) => {

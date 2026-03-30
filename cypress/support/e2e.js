@@ -21,8 +21,19 @@ import './commands';
 //Generate code-coverage
 import '@cypress/code-coverage/support';
 
+const isHydrationError = (message) =>
+  message.includes('Hydration failed') ||
+  message.includes('There was an error while hydrating');
+
+Cypress.on('uncaught:exception', (error) => {
+  if (isHydrationError(error.message)) {
+    return false;
+  }
+
+  return undefined;
+});
+
 export const slateBeforeEach = (contentType = 'Document') => {
-  cy.intercept('GET', `/**/*?expand*`).as('content');
   cy.autologin();
   cy.createContent({
     contentType: 'Document',
@@ -36,9 +47,8 @@ export const slateBeforeEach = (contentType = 'Document') => {
     path: 'cypress',
   });
   cy.visit('/cypress/my-page');
-  cy.wait('@content');
+  cy.waitForResourceToLoad('my-page');
   cy.navigate('/cypress/my-page/edit');
-  cy.wait('@content');
   cy.get('.block.title h1').should('exist');
 };
 

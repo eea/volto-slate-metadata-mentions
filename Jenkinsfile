@@ -297,6 +297,7 @@ pipeline {
                   try {
                     sh '''docker run --pull always --rm -d --name="$IMAGE_NAME-plone18" -e SITE="Plone" -e PROFILES="$BACKEND_PROFILES" -e ADDONS="$BACKEND_ADDONS" eeacms/plone-backend'''
                     sh '''docker run -d --shm-size=4g --link $IMAGE_NAME-plone18:plone --name="$IMAGE_NAME-cypress18" -e "RAZZLE_INTERNAL_API_PATH=http://plone:8080/Plone" --entrypoint=make --workdir=/app/src/addons/$GIT_NAME $IMAGE_NAME-frontend18 start-ci'''
+                    sleep 30
                     frontend = sh script:'''docker exec --workdir=/app/src/addons/${GIT_NAME} $IMAGE_NAME-cypress18 make check-ci''', returnStatus: true
                     if ( frontend != 0 ) {
                       sh '''docker logs $IMAGE_NAME-cypress18; exit 1'''
