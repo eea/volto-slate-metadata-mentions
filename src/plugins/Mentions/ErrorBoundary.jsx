@@ -13,7 +13,7 @@ export default class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     // eslint-disable-next-line
-    console.error(error, errorInfo);
+    console.error(error, errorInfo); // NOSONAR
   }
 
   render() {

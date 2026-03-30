@@ -318,6 +318,8 @@ Cypress.Commands.add(
 // --- waitForResourceToLoad ----------------------------------------------------------
 Cypress.Commands.add('waitForResourceToLoad', (fileName, type) => {
   const resourceCheckInterval = 40;
+  const maxChecks = 50;
+  const count = [0];
 
   return new Cypress.Promise((resolve) => {
     const checkIfResourceHasBeenLoaded = () => {
@@ -333,7 +335,18 @@ Cypress.Commands.add('waitForResourceToLoad', (fileName, type) => {
         return;
       }
 
-      setTimeout(checkIfResourceHasBeenLoaded, resourceCheckInterval);
+      count[0] += 1;
+      const tid = setTimeout(
+        checkIfResourceHasBeenLoaded,
+        resourceCheckInterval,
+      );
+
+      if (count[0] > maxChecks) {
+        clearTimeout(tid);
+        throw new Error(
+          `Timeout resolving resource: ${fileName} (type ${type})`,
+        );
+      }
     };
 
     checkIfResourceHasBeenLoaded();
@@ -377,30 +390,50 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('getSlateEditorAndType', (type) => {
   cy.get('.content-area .slate-editor [contenteditable=true]')
-    .focus()
+    .last()
     .click()
-    .wait(1000)
+    .trigger('focus')
     .type(type);
+
+  if (!type.includes('{')) {
+    return cy
+      .get('.content-area .slate-editor [contenteditable=true]')
+      .last()
+      .should('contain', type);
+  }
+
+  return cy.get('.content-area .slate-editor [contenteditable=true]').last();
 });
 
-Cypress.Commands.add('setSlateSelection', (subject, query, endQuery) => {
-  cy.get('.slate-editor.selected [contenteditable=true]')
-    .focus()
-    .click()
-    .setSelection(subject, query, endQuery)
-    .wait(1000);
-});
+Cypress.Commands.add(
+  'setSlateSelection',
+  (subject, query, endQuery, wait = 1000) => {
+    cy.get('.slate-editor.selected [contenteditable=true]')
+      .focus()
+      .click()
+      .setSelection(subject, query, endQuery)
+      .wait(wait);
+  },
+);
 
 Cypress.Commands.add('setSlateCursor', (subject, query, endQuery) => {
-  cy.get('.slate-editor.selected [contenteditable=true]')
+  return cy
+    .get('.slate-editor.selected [contenteditable=true]')
     .focus()
     .click()
     .setCursor(subject, query, endQuery)
     .wait(1000);
 });
 
-Cypress.Commands.add('clickSlateButton', (button) => {
-  cy.get(`.slate-inline-toolbar .button-wrapper a[title="${button}"]`).click();
+Cypress.Commands.add('clickSlateButton', (button, timeout = 8000) => {
+  cy.get('.slate-inline-toolbar', {
+    timeout,
+  }).should('be.visible');
+  cy.get(`.slate-inline-toolbar .button-wrapper a[title="${button}"]`, {
+    timeout,
+  })
+    .should('be.visible')
+    .click({ force: true });
 });
 
 Cypress.Commands.add('toolbarSave', () => {
@@ -469,6 +502,27 @@ function setBaseAndExtent(...args) {
 
 Cypress.Commands.add('navigate', (route = '') => {
   return cy.window().its('appHistory').invoke('push', route);
+});
+
+Cypress.Commands.add('readContent', (path) => {
+  let api_url, auth;
+  api_url = Cypress.env('API_PATH') || 'http://localhost:8080/Plone';
+  auth = {
+    user: 'admin',
+    pass: 'admin',
+  };
+  const normalizedPath = path.replace(/^\//, '');
+
+  return cy
+    .request({
+      method: 'GET',
+      url: `${api_url}/${normalizedPath}`,
+      headers: {
+        Accept: 'application/json',
+      },
+      auth: auth,
+    })
+    .its('body');
 });
 
 Cypress.Commands.add('store', () => {

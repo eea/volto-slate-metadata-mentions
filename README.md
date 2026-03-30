@@ -3,16 +3,16 @@
 [![Releases](https://img.shields.io/github/v/release/eea/volto-slate-metadata-mentions)](https://github.com/eea/volto-slate-metadata-mentions/releases)
 
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-slate-metadata-mentions%2Fmaster&subject=master)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-slate-metadata-mentions/job/master/display/redirect)
-[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions-master&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions-master)
-[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions-master&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions-master)
-[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions-master&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions-master)
-[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions-master&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions-master)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions)
 
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-slate-metadata-mentions%2Fdevelop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-slate-metadata-mentions/job/develop/display/redirect)
-[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions-develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions-develop)
-[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions-develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions-develop)
-[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions-develop)
-[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions-develop)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions&branch=develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions&branch=develop)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions&branch=develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions&branch=develop)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions&branch=develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions&branch=develop)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-slate-metadata-mentions&branch=develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-slate-metadata-mentions&branch=develop)
 
 
 [Volto Slate](https://6.dev-docs.plone.org/volto/configuration/volto-slate/) Metadata Mentions
@@ -61,6 +61,11 @@ This version requires: `@plone/volto >= 16.0.0.alpha.15` (`volto-slate` part of 
 
 Go to http://localhost:3000
 
+`make start` now defaults to Volto 18. To run the same setup against Volto 17, use:
+
+      VOLTO_VERSION=17 make
+      VOLTO_VERSION=17 make start
+
 ### Add volto-slate-metadata-mentions to your Volto project
 
 1. Make sure you have a [Plone backend](https://plone.org/download) up-and-running at http://localhost:8080/Plone
@@ -74,29 +79,38 @@ Go to http://localhost:3000
 * If you already have a volto project, just update `package.json`:
 
    ```JSON
-   "addons": [
-       "@eeacms/volto-slate-metadata-mentions"
-   ],
-
    "dependencies": {
        "@eeacms/volto-slate-metadata-mentions": "*"
    }
    ```
 
-* If not, create one:
+   and `volto.config.js`:
 
-   ```
-   npm install -g yo @plone/generator-volto
-   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-slate-metadata-mentions
-   cd my-volto-project
+   ```JavaScript
+   const addons = ['@eeacms/volto-slate-metadata-mentions'];
    ```
 
-1. Install new add-ons and restart Volto:
+* If not, create one with Cookieplone, as recommended by the official Plone documentation for Volto 18+:
 
    ```
-   yarn
-   yarn start
+   uvx cookieplone project
+   cd project-title
    ```
+
+1. Install or update dependencies, then start the project:
+
+   ```
+   make install
+   ```
+
+   For a Cookieplone project, start the backend and frontend in separate terminals:
+
+   ```
+   make backend-start
+   make frontend-start
+   ```
+
+   For a legacy Volto 17 project, install the package with `yarn` and restart the frontend as usual.
 
 1. Go to http://localhost:3000
 
