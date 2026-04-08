@@ -1,5 +1,4 @@
-import VoltoIcon from '@plone/volto/components/theme/Icon/Icon';
-import { InlineForm } from '@plone/volto/components/manage/Form';
+import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import briefcaseSVG from '@plone/volto/icons/briefcase.svg';
 import checkSVG from '@plone/volto/icons/check.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
@@ -9,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { setPluginOptions } from '@plone/volto-slate/actions';
+import VoltoIcon from '@plone/volto/components/theme/Icon/Icon';
 import { MentionSchema } from './schema';
 import { getMentionWidget } from './utils';
 
