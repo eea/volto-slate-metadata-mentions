@@ -1,13 +1,14 @@
-import { Icon as VoltoIcon, InlineForm } from '@plone/volto/components';
+import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import briefcaseSVG from '@plone/volto/icons/briefcase.svg';
 import checkSVG from '@plone/volto/icons/check.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { setPluginOptions } from '@plone/volto-slate/actions';
+import VoltoIcon from '@plone/volto/components/theme/Icon/Icon';
 import { MentionSchema } from './schema';
 import { getMentionWidget } from './utils';
 
@@ -19,6 +20,8 @@ const messages = defineMessages({
     defaultMessage: 'Metadata value',
   },
 });
+
+const EMPTY_OBJECT = Object.freeze({});
 
 const getAllowedMentionKeys = ({ metadata, intl }) => {
   const schema = MentionSchema({ metadata, intl });
@@ -50,7 +53,7 @@ const MentionEditor = (props) => {
 
   // Get Object metadata from global state
   const properties = useSelector(
-    (state) => state?.schema?.schema?.properties || {},
+    (state) => state?.schema?.schema?.properties ?? EMPTY_OBJECT,
   );
 
   const intl = useIntl();
@@ -75,8 +78,10 @@ const MentionEditor = (props) => {
   React.useEffect(() => {
     if (isElement && elementNode && !isEqual(elementNode, elRef.current)) {
       const currentMetadata = editor.getBlockProps
-        ? editor.getBlockProps().metadata || editor.getBlockProps().properties
-        : {};
+        ? editor.getBlockProps().metadata ||
+          editor.getBlockProps().properties ||
+          EMPTY_OBJECT
+        : EMPTY_OBJECT;
       elRef.current = elementNode;
       elementPathRef.current = elementPath;
       const data = elementNode.data
@@ -184,8 +189,10 @@ const MentionEditor = (props) => {
   const onChangeValues = React.useCallback(
     (id, value) => {
       const metaData = editor.getBlockProps
-        ? editor.getBlockProps().metadata || editor.getBlockProps().properties
-        : {};
+        ? editor.getBlockProps().metadata ||
+          editor.getBlockProps().properties ||
+          EMPTY_OBJECT
+        : EMPTY_OBJECT;
       if (id === 'metadata') {
         setFormData((currentFormData) =>
           normalizeMentionData({
