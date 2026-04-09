@@ -6,9 +6,9 @@ import { Popup, PopupContent } from 'semantic-ui-react';
 import { useEditorContext } from '@plone/volto-slate/hooks';
 import ErrorBoundary from './ErrorBoundary';
 
-import { ConditionalLink } from '@plone/volto/components';
+import ConditionalLink from '@plone/volto/components/manage/ConditionalLink/ConditionalLink';
 
-import { flattenToAppURL } from '@plone/volto/helpers';
+import { flattenToAppURL } from '@plone/volto/helpers/Url/Url';
 import { defineMessages, useIntl } from 'react-intl';
 
 const messages = defineMessages({
@@ -17,6 +17,8 @@ const messages = defineMessages({
     defaultMessage: 'Download image {title}',
   },
 });
+
+const EMPTY_OBJECT = Object.freeze({});
 
 export const MentionElement = ({
   attributes,
@@ -27,8 +29,10 @@ export const MentionElement = ({
 }) => {
   const { views } = config.widgets;
   const { data = {} } = element;
-  const initialFormData = useSelector((state) => state?.content?.data || {});
-  let metadata = { ...(extras?.metadata || initialFormData) };
+  const initialFormData = useSelector(
+    (state) => state?.content?.data ?? EMPTY_OBJECT,
+  );
+  let metadata = extras?.metadata || initialFormData;
   const id = data?.metadata || data?.id;
 
   const intl = useIntl();
@@ -39,7 +43,7 @@ export const MentionElement = ({
 
   if (editor?.getBlockProps) {
     const blockProps = editor.getBlockProps();
-    metadata = blockProps.metadata || blockProps.properties || {};
+    metadata = blockProps.metadata || blockProps.properties || EMPTY_OBJECT;
   }
   let output = metadata[id];
   let Widget = data?.dateOnly ? views.widget.date : views.getWidget(data);
