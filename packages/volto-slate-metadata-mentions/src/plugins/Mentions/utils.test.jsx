@@ -1,16 +1,17 @@
+import { vi } from 'vitest';
 import { Editor, Range } from 'slate';
 import { getMentionWidget, isCursorInMention } from './utils';
 
-jest.mock('slate', () => ({
+vi.mock('slate', () => ({
   Editor: {
-    above: jest.fn(),
+    above: vi.fn(),
   },
   Range: {
-    isCollapsed: jest.fn(),
+    isCollapsed: vi.fn(),
   },
 }));
 
-jest.mock('@plone/volto/registry', () => ({
+vi.mock('@plone/volto/registry', () => ({
   __esModule: true,
   default: {
     widgets: {
@@ -51,7 +52,7 @@ describe('getMentionWidget', () => {
 describe('isCursorInMention', () => {
   const editor = {};
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it('returns false if no mention', () => {
