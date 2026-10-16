@@ -1,9 +1,10 @@
+import { vi } from 'vitest';
 import { withMention } from './extensions';
 import { MENTION } from './constants';
 
 describe('withMention', () => {
   it('marks mention elements as inline', () => {
-    const originalIsInline = jest.fn(() => false);
+    const originalIsInline = vi.fn(() => false);
     const editor = { isInline: originalIsInline };
 
     const result = withMention(editor);
@@ -14,7 +15,7 @@ describe('withMention', () => {
   });
 
   it('falls back to the original isInline handler for other elements', () => {
-    const originalIsInline = jest.fn(() => 'fallback');
+    const originalIsInline = vi.fn(() => 'fallback');
     const editor = { isInline: originalIsInline };
 
     withMention(editor);
