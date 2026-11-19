@@ -1,0 +1,7 @@
+{
+  "title": "Slate Metadata Mentions",
+  "frontend_addon_name": "volto-slate-metadata-mentions",
+  "description": "Volto Slate Metadata Mentions Plugin",
+  "volto_version": "19.3.0",
+  "__template__": "frontend_addon"
+}

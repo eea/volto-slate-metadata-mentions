@@ -1,12 +1,13 @@
+import { vi } from 'vitest';
 import { MentionSchema } from './schema';
 
-jest.mock('react-intl', () => ({
+vi.mock('react-intl', () => ({
   defineMessages: (messages) => messages,
 }));
 
 describe('MentionSchema', () => {
   const intl = {
-    formatMessage: jest.fn((message) => `formatted:${message.id}`),
+    formatMessage: vi.fn((message) => `formatted:${message.id}`),
   };
 
   beforeEach(() => {
