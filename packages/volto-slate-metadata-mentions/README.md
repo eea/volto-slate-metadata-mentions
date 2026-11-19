@@ -29,7 +29,26 @@
 ![Edit](https://raw.githubusercontent.com/eea/volto-slate-metadata-mentions/docs/docs/edit.gif)
 
 ## Upgrade
-   
+
+### Upgrading to 10.x
+
+> This version requires `Volto 18` or `Volto 19` and Node.js 22.
+
+The plugin keeps the same element types, the same settings and the same stored rich text, so
+metadata mentions created with 9.x keep rendering unchanged. The release adds Volto 19 support and
+moves the repository to the Volto 19 layout, where the published package lives in
+`packages/volto-slate-metadata-mentions`.
+
+#### Breaking changes
+
+- **Node.js 22 or newer is required** (`engines.node >= 22`), 9.x declared no engine.
+- **React 18 is required.** The package declares `react` and `react-dom` as `^18.2.0` peers, 9.x
+  declared no peers.
+- **The package no longer ships the repository tooling.** The Cypress specs and their support
+  files, the Jest setup (`jest-addon.config.js`, `jest.setup.js`) and the Docker and Jenkins files
+  are gone. The unit tests moved to Vitest and live next to the add-on, so nothing a site imports
+  was removed.
+
 ### Upgrading to 6.x
    
 This version requires: `@plone/volto >= 16.0.0.alpha.15` (`volto-slate` part of Volto Core).
